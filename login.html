@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+
+<!-- ottohub-electron is an open source ottohub.cn client packed by electron
+Copyright (C) 2024-2025  Yu Hongbo, CNOCTAVE
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
+
+<html>
+
+<head>
+    <title>ottohub-electron</title>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1">
+    <meta name="theme-color" content="#00B4FF">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="msapplication-TileImage" content="/favicon.ico">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="apple-mobile-web-app-title" content="Octave中文网">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="title" content="Octave中文网" data-qmeta="title">
+    <meta property="og:title" content="Octave中文网" data-qmeta="ogTitle">
+    <meta name="twitter:title" content="Octave中文网" data-qmeta="twitterTitle">
+    <meta name="description" content="Octave中文网是一个面向中文Octave开发者的交流平台，拥有中文Octave文档、中文Octave论坛和中文Octave新闻等特色。"
+        data-qmeta="description">
+    <meta property="og:description" content="Octave中文网是一个面向中文Octave开发者的交流平台，拥有中文Octave文档、中文Octave论坛和中文Octave新闻等特色。"
+        data-qmeta="ogDesc">
+    <meta name="twitter:description" content="Octave中文网是一个面向中文Octave开发者的交流平台，拥有中文Octave文档、中文Octave论坛和中文Octave新闻等特色。"
+        data-qmeta="twitterDesc">
+    <link href="MaterialIcons.css" rel="stylesheet" type="text/css">
+    <link href="fontawesome/fontawesome5.css" rel="stylesheet" type="text/css">
+    <link href="fontawesome/fontawesome6.css" rel="stylesheet" type="text/css">
+    <link href="animate.css" rel="stylesheet" type="text/css">
+    <link href="quasar.css" rel="stylesheet" type="text/css">
+    <link href="main.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div id="q-app">
+        <q-layout view="hHh LpR fFf">
+            <div class="q-ma-md navbar_div" v-show="sessionStorage_token">
+                <q-input filled v-model="text" label="万能搜索" style="width: 100%; margin-right: 0;"
+                    v-show="innerWidth <= 1080">
+                    <template v-slot:append>
+                        <q-btn color="primary" @click="goToID(`search.html?keyword=${text}`)">
+                            <q-icon left name="search"></q-icon>
+                            <div>搜索</div>
+                        </q-btn>
+                    </template>
+                </q-input>
+                <div class="avatar_div">
+                    <q-avatar color="green" text-color="white" icon="tv"></q-avatar>
+                    <div>视频</div>
+                    <q-popup-proxy>
+                        <q-banner>
+                            <q-list>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=1&category=1')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="window"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>分区视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=2')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="shuffle"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>随机视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=3&offset=0')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="access_time"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>最新视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=4&offset=0&time_limit=7')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="bar_chart"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>本周热门</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=4&offset=0&time_limit=30')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="trending_up"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>本月热门</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=4&offset=0&time_limit=90')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="whatshot"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>本季热门</q-item-section>
+                                </q-item>
+                            </q-list>
+                        </q-banner>
+                    </q-popup-proxy>
+                </div>
+                <div class="q-mx-md avatar_div" @click="goToID('blog_list.html?type=1')">
+                    <q-avatar color="red" text-color="white" icon="create"></q-avatar>
+                    <div>动态</div>
+                </div>
+                <q-input filled v-model="text" label="万能搜索" v-show="innerWidth > 1080">
+                    <template v-slot:append>
+                        <q-btn color="primary" @click="goToID(`search.html?keyword=${text}`)">
+                            <q-icon left name="search"></q-icon>
+                            <div>搜索</div>
+                        </q-btn>
+                    </template>
+                </q-input>
+                <div class="q-mx-md avatar_div">
+                    <q-avatar color="teal" text-color="white" icon="menu">
+                        <q-badge color="red" floating v-show="new_message_num_ > 0">{{new_message_num_}}</q-badge>
+                    </q-avatar>
+                    <div>其他</div>
+                    <q-popup-proxy>
+                        <q-banner>
+                            <q-list>
+                                <q-item clickable v-ripple @click="goToID('im.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="teal" name="sms"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>消息</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('my.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="purple-12" name="man"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>我的</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('admin.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="settings"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>管理页面</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('submit_video.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="green" name="tv"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>发布视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('submit_blog.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="purple-12" name="create"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>发布动态</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('docs/index.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="yellow-10" name="help"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>使用帮助</q-item-section>
+                                </q-item>
+                            </q-list>
+                        </q-banner>
+                    </q-popup-proxy>
+                </div>
+                <div class="avatar_div" @click="goToLogin()">
+                    <q-avatar class="cursor-pointer">
+                        <img :src="sessionStorage_avatar_url">
+                    </q-avatar>
+                </div>
+            </div>
+            <q-separator></q-separator>
+            <q-page-container>
+                <div style="width:100%;height:100%;display: flex; 
+                    flex-direction: column;
+                    align-content: center;
+                    align-items: center;
+                    flex-wrap: wrap;">
+                    <div class="q-ma-md" style="margin-top:10vh; margin-bottom:10vh; width: 90vw; display: flex; 
+                        flex-direction: column;
+                        align-content: center;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        justify-content: center;
+                        border: 5px grey solid;
+                        border-radius: 10px;" v-show="!sessionStorage_token">
+                        <div class="q-ma-md refreshbar_div">
+                            <div class="text-h4">登录</div>
+                            <q-btn color="primary" @click="goToID('index.html')">
+                                <q-icon left name="home"></q-icon>
+                                <div>回到首页</div>
+                            </q-btn>
+                        </div>
+                        <q-input filled v-model="uid_email" label="UID/邮箱"
+                            style="width:100%; margin-bottom: 10px;"></q-input>
+                        <q-input filled v-model="pw" type="password" label="密码"
+                            style="width:100%; margin-bottom: 10px;"></q-input>
+                        <q-btn color="primary" style="width:100%; margin-bottom: 10px;" @click="login(uid_email, pw)">
+                            <q-icon left name="login"></q-icon>
+                            <div>登录</div>
+                        </q-btn>
+                        <q-btn color="green" style="width:100%; margin-bottom: 10px;" @click="register_dialog=true;">
+                            <q-icon left name="edit"></q-icon>
+                            <div>注册</div>
+                        </q-btn>
+                        <q-btn color="yellow-10" style="width:100%; margin-bottom: 10px;" @click="passwordreset_dialog=true;">
+                            <q-icon left name="edit"></q-icon>
+                            <div>重置密码</div>
+                        </q-btn>
+                    </div>
+                    <div class="q-ma-md" style="margin-top:10vh; margin-bottom:10vh; width: 90vw; display: flex; 
+                        flex-direction: row;
+                        align-content: center;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        justify-content: flex-start;
+                        border: 5px grey solid;
+                        border-radius: 10px;" v-show="sessionStorage_token">
+                        <div class="text-h4">用户信息</div>
+                        <q-input filled v-model="user.uid" label="UID" readonly
+                            style="width:100%; margin-bottom: 10px;"></q-input>
+                        <q-input filled v-model="user.email" label="email" readonly
+                            style="width:100%; margin-bottom: 10px;"></q-input>
+                        <q-input filled v-model="user.phone" label="手机号码" style="width:100%; margin-bottom: 10px;">
+                            <template v-slot:append>
+                                <q-btn color="primary" @click="update_phone(sessionStorage_token, user.phone)">
+                                    <q-icon left name="edit"></q-icon>
+                                    <div>修改</div>
+                                </q-btn>
+                            </template>
+                        </q-input>
+                        <q-input filled v-model="user.qq" label="QQ" style="width:100%; margin-bottom: 10px;">
+                            <template v-slot:append>
+                                <q-btn color="primary" @click="update_qq(sessionStorage_token, user.qq)">
+                                    <q-icon left name="edit"></q-icon>
+                                    <div>修改</div>
+                                </q-btn>
+                            </template>
+                        </q-input>
+                        <q-input filled v-model="user.username" label="用户名" style="width:100%; margin-bottom: 10px;">
+                            <template v-slot:append>
+                                <q-btn color="primary" @click="update_username(sessionStorage_token, user.username)">
+                                    <q-icon left name="edit"></q-icon>
+                                    <div>修改</div>
+                                </q-btn>
+                            </template>
+                        </q-input>
+                        <q-input filled v-model="pw" label="密码" style="width:100%; margin-bottom: 10px;">
+                            <template v-slot:append>
+                                <q-btn color="primary" @click="update_pw(sessionStorage_token, pw)">
+                                    <q-icon left name="edit"></q-icon>
+                                    <div>修改</div>
+                                </q-btn>
+                            </template>
+                        </q-input>
+                        <q-input filled v-model="user.intro" label="简介" style="width:100%; margin-bottom: 10px;">
+                            <template v-slot:append>
+                                <q-btn color="primary" @click="update_intro(sessionStorage_token, user.intro)">
+                                    <q-icon left name="edit"></q-icon>
+                                    <div>修改</div>
+                                </q-btn>
+                            </template>
+                        </q-input>
+                        <q-input filled v-model="user.sex" label="性别" style="width:100%; margin-bottom: 10px;">
+                            <template v-slot:append>
+                                <q-btn color="primary" @click="update_sex(sessionStorage_token, user.sex)">
+                                    <q-icon left name="edit"></q-icon>
+                                    <div>修改</div>
+                                </q-btn>
+                            </template>
+                        </q-input>
+                        <q-input filled v-model="user.honour" label="荣誉" readonly
+                            style="width:100%; margin-bottom: 10px;"></q-input>
+                        <q-input filled v-model="user.experience" label="经验值" readonly
+                            style="width:100%; margin-bottom: 10px;"></q-input>
+                        <q-input filled v-model="user.time" label="注册时间" readonly
+                            style="width:100%; margin-bottom: 10px;"></q-input>
+                        <q-file filled v-model="avatar" label="点击上传头像" style="width:100%; margin-bottom: 10px;">
+                            <template v-slot:append>
+                                <q-btn color="primary" @click="update_avatar(sessionStorage_token, avatar)">
+                                    <q-icon left name="edit"></q-icon>
+                                    <div>修改</div>
+                                </q-btn>
+                            </template>
+                        </q-file>
+                        <q-file filled v-model="cover" label="点击上传封面" style="width:100%; margin-bottom: 10px;">
+                            <template v-slot:append>
+                                <q-btn color="primary" @click="update_cover(sessionStorage_token, cover)">
+                                    <q-icon left name="edit"></q-icon>
+                                    <div>修改</div>
+                                </q-btn>
+                            </template>
+                        </q-file>
+                        <q-btn color="red" style="width:100%; margin-bottom: 10px;" @click="exit()">
+                            <q-icon left name="logout"></q-icon>
+                            <div>退出登录</div>
+                        </q-btn>
+                    </div>
+                </div>
+            </q-page-container>
+        </q-layout>
+        <!-- 注册弹窗 -->
+        <q-dialog v-model="register_dialog" full-width>
+            <q-card style="background-color: #f1f1f1;">
+                <q-card-section class="row items-center q-pb-none">
+                    <div class="text-h6">注册</div>
+                    <q-space></q-space>
+                    <q-btn icon="close" flat round dense v-close-popup></q-btn>
+                </q-card-section>
+
+                <q-card-section class="q-pt-none">
+                    <q-input filled v-model="email" label="邮箱" style="width:100%; margin-bottom: 10px;"></q-input>
+                    <q-input filled v-model="register_verification_code_" label="验证码"
+                        style="width:100%; margin-bottom: 10px;">
+                        <template v-slot:append>
+                            <q-btn color="primary" @click="register_verification_code(email)">
+                                <q-icon left name="send"></q-icon>
+                                <div>发送验证码</div>
+                            </q-btn>
+                        </template>
+                    </q-input>
+                    <q-input filled v-model="pw" type="password" label="密码"
+                        style="width:100%; margin-bottom: 10px;"></q-input>
+                    <q-input filled v-model="confirm_pw" type="password" label="确认密码"
+                        style="width:100%; margin-bottom: 10px;"></q-input>
+                    <q-btn color="green" style="width:100%; margin-bottom: 10px;"
+                        @click="register(email, register_verification_code_, pw, confirm_pw)">
+                        <q-icon left name="check"></q-icon>
+                        <div>注册</div>
+                    </q-btn>
+                </q-card-section>
+            </q-card>
+        </q-dialog>
+        <!-- 重置密码弹窗 -->
+        <q-dialog v-model="passwordreset_dialog" full-width>
+            <q-card style="background-color: #f1f1f1;">
+                <q-card-section class="row items-center q-pb-none">
+                    <div class="text-h6">重置密码</div>
+                    <q-space></q-space>
+                    <q-btn icon="close" flat round dense v-close-popup></q-btn>
+                </q-card-section>
+
+                <q-card-section class="q-pt-none">
+                    <q-input filled v-model="email" label="邮箱" style="width:100%; margin-bottom: 10px;"></q-input>
+                    <q-input filled v-model="passwordreset_verification_code_" label="验证码"
+                        style="width:100%; margin-bottom: 10px;">
+                        <template v-slot:append>
+                            <q-btn color="primary" @click="passwordreset_verification_code(email)">
+                                <q-icon left name="send"></q-icon>
+                                <div>发送验证码</div>
+                            </q-btn>
+                        </template>
+                    </q-input>
+                    <q-input filled v-model="pw" type="password" label="密码"
+                        style="width:100%; margin-bottom: 10px;"></q-input>
+                    <q-input filled v-model="confirm_pw" type="password" label="确认密码"
+                        style="width:100%; margin-bottom: 10px;"></q-input>
+                    <q-btn color="green" style="width:100%; margin-bottom: 10px;"
+                        @click="passwordreset(email, passwordreset_verification_code_, pw, confirm_pw)">
+                        <q-icon left name="check"></q-icon>
+                        <div>重置密码</div>
+                    </q-btn>
+                </q-card-section>
+            </q-card>
+        </q-dialog>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="vue.js"></script>
+    <script src="quasar.js"></script>
+    <!-- <script>
+        function setInitialScale() {
+            const screenWidth = window.screen.width;
+            const initialScale = screenWidth / 700;
+            const minScale = 0.5;
+            const maxScale = 2.0;
+            const scale = Math.min(maxScale, Math.max(minScale, initialScale));
+            document.querySelector('meta[name="viewport"]').setAttribute(
+                'content', 
+                `width=700, initial-scale=${scale}, minimum-scale=${minScale}, maximum-scale=${maxScale}`
+            );
+        }
+        window.addEventListener('load', setInitialScale);
+        window.addEventListener('resize', setInitialScale);
+    </script> -->
+    <script>
+        const App = {
+            data() {
+                return {
+                    sessionStorage_token: sessionStorage.getItem('token'),
+                    sessionStorage_uid: sessionStorage.getItem('uid'),
+                    sessionStorage_cover_url: sessionStorage.getItem('cover_url'),
+                    sessionStorage_avatar_url: sessionStorage.getItem('avatar_url') ? sessionStorage.getItem('avatar_url') : 'https://api.ottohub.cn/public/img/avatar_default.jpg',
+                    // 跳转方法
+                    goToID(target) {
+                        window.open(target, '_self');
+                    },
+                    // 重新加载页面
+                    reload() {
+                        window.open(window.location.href, '_self');
+                    },
+                    exit() {
+                        sessionStorage.removeItem('token');
+                        sessionStorage.removeItem('uid');
+                        sessionStorage.removeItem('cover_url');
+                        sessionStorage.removeItem('avatar_url');
+                        this.reload();
+                    },
+                    // 登录
+                    login: async (uid_email, pw) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'auth',
+                            action: 'login',
+                            uid_email: uid_email,
+                            pw: pw
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_password': '密码错误',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '登录失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        sessionStorage.setItem('token', response.data.token);
+                        sessionStorage.setItem('uid', response.data.uid);
+                        sessionStorage.setItem('avatar_url', response.data.avatar_url);
+                        sessionStorage.setItem('cover_url', response.data.cover_url);
+                        this.goToID(this.from);
+                    },
+                    // 注册
+                    register: async (email, register_verification_code, pw, confirm_pw) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'auth',
+                            action: 'register',
+                            email: email,
+                            register_verification_code: register_verification_code,
+                            pw: pw,
+                            confirm_pw: confirm_pw,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'mismatch_pw': '两次密码不一样',
+                                'error_pw': '密码错误',
+                                'email_exist': '邮箱已存在',
+                                'error_verification_code': '验证码错误',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '注册失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else{
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '注册成功'
+                            });
+                        }
+                    },
+                    // 重置密码
+                    passwordreset: async (email, passwordreset_verification_code, pw, confirm_pw) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'auth',
+                            action: 'passwordreset',
+                            email: email,
+                            passwordreset_verification_code: passwordreset_verification_code,
+                            pw: pw,
+                            confirm_pw: confirm_pw,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'mismatch_pw': '两次密码不一样',
+                                'error_pw': '密码错误',
+                                'email_exist': '邮箱已存在',
+                                'error_verification_code': '验证码错误',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '重置密码失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else{
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '重置密码成功'
+                            });
+                        }
+                    },
+                    // 发送注册验证码
+                    register_verification_code: async (email) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'auth',
+                            action: 'register_verification_code',
+                            email: email,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'email_exist': '邮箱已存在',
+                                'error_email': '邮箱错误',
+                                'error_qq_email': '非纯数字qq邮箱',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '发送注册验证码失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else{
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '发送注册验证码成功'
+                            });
+                        }
+                    },
+                    // 发送重置密码验证码
+                    passwordreset_verification_code: async (email) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'auth',
+                            action: 'passwordreset_verification_code',
+                            email: email,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'email_unexist': '邮箱不存在',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '发送注册验证码失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else{
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '发送注册验证码成功'
+                            });
+                        }
+                    },
+                    // 用户详情
+                    user_profile: async (token) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'profile',
+                            action: 'user_profile',
+                            token: token,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '获取用户详情失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        this.user = response.data.profile;
+                    },
+                    // 更新昵称
+                    update_username: async (token, username) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'profile',
+                            action: 'update_username',
+                            token: token,
+                            username: username,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_username': '非法昵称',
+                                'username_exist': '昵称已存在',
+                                'warn': '触发敏感词',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '更新昵称失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '更新昵称成功'
+                            });
+                        }
+                    },
+                    // 更新密码
+                    update_pw: async (token, pw) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'profile',
+                            action: 'update_pw',
+                            token: token,
+                            pw: pw,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_pw': '非法密码',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '更新密码失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '更新密码成功'
+                            });
+                        }
+                        sessionStorage.setItem('token', response.data.new_token);
+                    },
+                    // 更新手机号
+                    update_phone: async (token, phone) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'profile',
+                            action: 'update_phone',
+                            token: token,
+                            phone: phone,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_phone': '非法手机号',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '更新手机号失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '更新手机号成功'
+                            });
+                        }
+                    },
+                    // 更新QQ
+                    update_qq: async (token, qq) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'profile',
+                            action: 'update_qq',
+                            token: token,
+                            qq: qq,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_qq': '非法QQ号',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '更新QQ失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '更新QQ成功'
+                            });
+                        }
+                    },
+                    // 更新性别
+                    update_sex: async (token, sex) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'profile',
+                            action: 'update_sex',
+                            token: token,
+                            sex: sex,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_sex': '非法性别',
+                                'warn': '触发敏感词',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '更新性别失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '更新性别成功'
+                            });
+                        }
+                    },
+                    // 更新简介
+                    update_intro: async (token, intro) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'profile',
+                            action: 'update_intro',
+                            token: token,
+                            intro: intro,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_intro': '非法简介',
+                                'warn': '触发敏感词',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '更新简介失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '更新简介成功'
+                            });
+                        }
+                    },
+                    // 更新头像
+                    update_avatar: async (token, avatar) => {
+                        const formData = new FormData();
+                        formData.append('action', 'update_avatar');
+                        formData.append('token', token);
+                        formData.append('file_jpg', avatar);
+                        let response = await axios({
+                            method: 'post',
+                            url: 'https://api.ottohub.cn/module/creator/update_avatar.php',
+                            data: formData,
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_file': '错误文件格式',
+                                'file_not_found': '缺少文件',
+                                'too_big_file': '文件太大',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '更新头像失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '更新头像成功'
+                            });
+                        }
+                    },
+                    // 更新封面
+                    update_cover: async (token, cover) => {
+                        const formData = new FormData();
+                        formData.append('action', 'update_cover');
+                        formData.append('token', token);
+                        formData.append('file_jpg', cover);
+                        let response = await axios({
+                            method: 'post',
+                            url: 'https://api.ottohub.cn/module/creator/update_cover.php',
+                            data: formData,
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_file': '错误文件格式',
+                                'file_not_found': '缺少文件',
+                                'too_big_file': '文件太大',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '更新封面失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '更新封面成功'
+                            });
+                        }
+                    },
+                    // 未读消息数
+                    new_message_num: async (token) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'im',
+                            action: 'new_message_num',
+                            token: token,
+                        };
+                        const response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            return;
+                        }
+                        else {
+                            this.new_message_num_ = response.data.new_message_num;
+                        }
+                    },
+                    new_message_num_: null,
+                    avatar: null,
+                    cover: null,
+                    from: null,
+                    uid_email: null,
+                    pw: null,
+                    email: null,
+                    register_verification_code_: null,
+                    passwordreset_verification_code_: null,
+                    confirm_pw: null,
+                    user: {
+                        "uid": "",
+                        "email": "",
+                        "phone": "",
+                        "qq": "",
+                        "username": "",
+                        "time": "",
+                        "sex": "",
+                        "intro": "",
+                        "honour": "",
+                        "experience": 0,
+                    },
+                    register_dialog: false,
+                    passwordreset_dialog: false,
+                };
+            },
+            mounted() {
+                const currentUrl = new URL(window.location.href);
+                this.from = currentUrl.searchParams.get('from') ? decodeURIComponent(currentUrl.searchParams.get('from')) : 'index.html';
+                if (this.sessionStorage_token) {
+                    this.user_profile(this.sessionStorage_token);
+                }
+                if (this.sessionStorage_token) {
+                    setInterval(() => {
+                        this.new_message_num(this.sessionStorage_token);
+                    }, 5000);
+                }
+            },
+            computed: {
+                innerWidth() {
+                    return window.innerWidth;
+                }
+            }
+        };
+        const app = Vue.createApp(App);
+
+        app.use(Quasar)
+        app.mount('#q-app')
+    </script>
+</body>
+
+</html>

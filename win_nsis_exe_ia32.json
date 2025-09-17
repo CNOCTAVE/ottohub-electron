@@ -1,0 +1,28 @@
+{
+    "appId": "cn.cnoctave.ottohub-electron",
+    "productName": "ottohub-electron",
+    "buildNumber": "2025.9.0",
+    "icon": "logo.png",
+    "directories": {
+        "output": "dist"
+    },
+    "publish": [
+        {
+        "provider": "github",
+        "owner": "CNOCTAVE",
+        "repo": "ottohub-electron",
+        "releaseType": "release"
+        }
+    ],
+    "win": {
+        "artifactName": "${name}-${version}-${os}-${arch}-nsis.${ext}",
+        "target": [
+            {
+                "target": "nsis",
+                "arch": [
+                    "ia32"
+                ]
+            }
+        ]
+    }
+}

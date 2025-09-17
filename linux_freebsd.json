@@ -1,0 +1,30 @@
+{
+    "appId": "cn.cnoctave.ottohub-electron",
+    "productName": "ottohub-electron",
+    "buildNumber": "2025.9.0",
+    "icon": "logo.png",
+    "directories": {
+        "output": "dist"
+    },
+    "publish": [
+        {
+        "provider": "github",
+        "owner": "CNOCTAVE",
+        "repo": "ottohub-electron",
+        "releaseType": "release"
+        }
+    ],
+    "linux": {
+        "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
+        "target": [
+            {
+                "target": "freebsd",
+                "arch": [
+                    "x64",
+                    "armv7l",
+                    "arm64"
+                ]
+            }
+        ]
+    }
+}

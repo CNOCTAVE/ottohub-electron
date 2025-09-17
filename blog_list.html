@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+
+<!-- ottohub-electron is an open source ottohub.cn client packed by electron
+Copyright (C) 2024-2025  Yu Hongbo, CNOCTAVE
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
+
+<html>
+
+<head>
+    <title>ottohub-electron</title>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1">
+    <meta name="theme-color" content="#00B4FF">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="msapplication-TileImage" content="/favicon.ico">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="apple-mobile-web-app-title" content="Octave中文网">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="title" content="Octave中文网" data-qmeta="title">
+    <meta property="og:title" content="Octave中文网" data-qmeta="ogTitle">
+    <meta name="twitter:title" content="Octave中文网" data-qmeta="twitterTitle">
+    <meta name="description" content="Octave中文网是一个面向中文Octave开发者的交流平台，拥有中文Octave文档、中文Octave论坛和中文Octave新闻等特色。"
+        data-qmeta="description">
+    <meta property="og:description" content="Octave中文网是一个面向中文Octave开发者的交流平台，拥有中文Octave文档、中文Octave论坛和中文Octave新闻等特色。"
+        data-qmeta="ogDesc">
+    <meta name="twitter:description" content="Octave中文网是一个面向中文Octave开发者的交流平台，拥有中文Octave文档、中文Octave论坛和中文Octave新闻等特色。"
+        data-qmeta="twitterDesc">
+    <link href="MaterialIcons.css" rel="stylesheet" type="text/css">
+    <link href="fontawesome/fontawesome5.css" rel="stylesheet" type="text/css">
+    <link href="fontawesome/fontawesome6.css" rel="stylesheet" type="text/css">
+    <link href="animate.css" rel="stylesheet" type="text/css">
+    <link href="quasar.css" rel="stylesheet" type="text/css">
+    <link href="main.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div id="q-app">
+        <q-layout view="hHh LpR fFf">
+            <div class="q-ma-md navbar_div">
+                <q-input filled v-model="text" label="万能搜索" style="width: 100%; margin-right: 0;" v-show="innerWidth <= 1080">
+                    <template v-slot:append>
+                        <q-btn color="primary" @click="goToID(`search.html?keyword=${text}`)">
+                            <q-icon left name="search"></q-icon>
+                            <div>搜索</div>
+                        </q-btn>
+                    </template>
+                </q-input>
+                <div class="avatar_div">
+                    <q-avatar color="green" text-color="white" icon="tv"></q-avatar>
+                    <div>视频</div>
+                    <q-popup-proxy>
+                        <q-banner>
+                            <q-list>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=1&category=1')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="window"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>分区视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=2')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="shuffle"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>随机视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=3&offset=0')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="access_time"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>最新视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=4&offset=0&time_limit=7')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="bar_chart"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>本周热门</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=4&offset=0&time_limit=30')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="trending_up"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>本月热门</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=4&offset=0&time_limit=90')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="whatshot"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>本季热门</q-item-section>
+                                </q-item>
+                            </q-list>
+                        </q-banner>
+                    </q-popup-proxy>
+                </div>
+                <div class="avatar_div" @click="goToID('blog_list.html?type=1')">
+                    <q-avatar color="red" text-color="white" icon="create"></q-avatar>
+                    <div>动态</div>
+                </div>
+                <q-input filled v-model="text" label="万能搜索" v-show="innerWidth > 1080">
+                    <template v-slot:append>
+                        <q-btn color="primary" @click="goToID(`search.html?keyword=${text}`)">
+                            <q-icon left name="search"></q-icon>
+                            <div>搜索</div>
+                        </q-btn>
+                    </template>
+                </q-input>
+                <div class="avatar_div">
+                    <q-avatar color="teal" text-color="white" icon="menu">
+                        <q-badge color="red" floating v-show="new_message_num_ > 0">{{new_message_num_}}</q-badge>
+                    </q-avatar>
+                    <div>其他</div>
+                    <q-popup-proxy>
+                        <q-banner>
+                            <q-list>
+                                <q-item clickable v-ripple @click="goToID('im.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="teal" name="sms"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>消息</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('my.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="purple-12" name="man"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>我的</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('admin.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="settings"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>管理页面</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('submit_video.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="green" name="tv"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>发布视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('submit_blog.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="purple-12" name="create"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>发布动态</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('docs/index.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="yellow-10" name="help"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>使用帮助</q-item-section>
+                                </q-item>
+                            </q-list>
+                        </q-banner>
+                    </q-popup-proxy>
+                </div>
+                <div class="avatar_div" @click="goToLogin()">
+                    <q-avatar class="cursor-pointer">
+                        <img :src="sessionStorage_avatar_url">
+                    </q-avatar>
+                </div>
+            </div>
+            <q-separator></q-separator>
+            <div class="q-ma-md navbar_div">
+                <div class="text-h4">动态</div>
+                <div class="q-mx-md avatar_div cursor-pointer" @click="goToID('blog_list.html?type=1')">
+                    <q-avatar color="primary" text-color="white" icon="shuffle"></q-avatar>
+                    <div>随机动态</div>
+                </div>
+                <div class="q-mx-md avatar_div cursor-pointer" @click="goToID('blog_list.html?type=2&offset=0')">
+                    <q-avatar color="primary" text-color="white" icon="access_time"></q-avatar>
+                    <div>最新动态</div>
+                </div>
+                <div class="q-mx-md avatar_div cursor-pointer"
+                    @click="goToID('blog_list.html?type=3&offset=0&time_limit=7')">
+                    <q-avatar color="primary" text-color="white" icon="bar_chart"></q-avatar>
+                    <div>本周热门</div>
+                </div>
+                <div class="q-mx-md avatar_div cursor-pointer"
+                    @click="goToID('blog_list.html?type=3&offset=0&time_limit=30')">
+                    <q-avatar color="primary" text-color="white" icon="trending_up"></q-avatar>
+                    <div>本月热门</div>
+                </div>
+                <div class="q-mx-md avatar_div cursor-pointer"
+                    @click="goToID('blog_list.html?type=3&offset=0&time_limit=90')">
+                    <q-avatar color="primary" text-color="white" icon="whatshot"></q-avatar>
+                    <div>本季热门</div>
+                </div>
+            </div>
+            <q-separator></q-separator>
+            <q-page-container>
+                <div>
+                    <div class="q-ma-md refreshbar_div">
+                        <div class="text-h4" v-if="this.type === '1'">随机动态</div>
+                        <div class="text-h4" v-else-if="this.type === '2'">最新动态</div>
+                        <div class="text-h4" v-else-if="(this.type === '3') && (this.time_limit === '7')">本周热门</div>
+                        <div class="text-h4" v-else-if="(this.type === '3') && (this.time_limit === '30')">本月热门</div>
+                        <div class="text-h4" v-else-if="(this.type === '3') && (this.time_limit === '90')">本季热门</div>
+                        <div class="text-h4" v-else-if="this.type === '3'">热门动态</div>
+                        <div class="text-h4" v-else-if="this.type === '4'">搜索动态</div>
+                        <div class="text-h4" v-else-if="this.type === '5'">用户动态</div>
+                        <div class="text-h4" v-else>随机动态</div>
+                        <q-btn color="primary" icon="refresh" label="换一批" v-show="this.type === '1'"
+                            @click="reload()"></q-btn>
+                        <q-btn color="primary" icon="west" label="上一页" v-show="this.type === '2'"
+                            @click="changeOffset('2', -8)"></q-btn>
+                        <div v-show="this.type === '2'">&nbsp;</div>
+                        <q-btn color="primary" icon-right="east" label="下一页" v-show="this.type === '2'"
+                            @click="changeOffset('2', 8)"></q-btn>
+                        <q-btn color="primary" icon="west" label="上一页" v-show="this.type === '3'"
+                            @click="changeOffset('3', -8)"></q-btn>
+                        <div v-show="this.type === '3'">&nbsp;</div>
+                        <q-btn color="primary" icon-right="east" label="下一页" v-show="this.type === '3'"
+                            @click="changeOffset('3', 8)"></q-btn>
+                        <q-btn color="primary" icon="west" label="上一页" v-show="this.type === '5'"
+                            @click="changeOffset('5', -8)"></q-btn>
+                        <div v-show="this.type === '5'">&nbsp;</div>
+                        <q-btn color="primary" icon-right="east" label="下一页" v-show="this.type === '5'"
+                            @click="changeOffset('5', 8)"></q-btn>
+                    </div>
+                    <q-separator></q-separator>
+                    <div>
+                        <div class="q-mx-md navbar_div">
+                            <div class="flexcards-container q-mn-md" style="width: 100%">
+                                <q-list style="width: 100%">
+                                    <q-item clickable v-ripple v-for="(v, k) in blog_list" :key="k"
+                                        style="border-bottom:1px solid rgb(226, 226, 226);">
+                                        <q-item-section style="max-width: 50px;" class="col-md-auto" @click="goToID(`search.html?keyword=${v.uid}`)">
+                                            <q-avatar class="cursor-pointer" @click="goToID(`search.html?keyword=${v.uid}`)">
+                                                <img :src="v.avatar_url">
+                                            </q-avatar>
+                                        </q-item-section>
+                                        <q-item-section @click="goToID(`blog.html?bid=${v.bid}`)">
+                                            <div style="line-break: anywhere;" class="text-h6"><i><b>&nbsp;{{v.title}}</b></i></div>
+                                            <div style="line-break: anywhere;">&nbsp;{{v.content}}</div>
+                                        </q-item-section>
+                                        <q-item-section class="col-md-auto" style="max-width: 30vw; text-align: center;"
+                                            @click="goToID(`blog.html?bid=${v.bid}`)">{{v.time}}</q-item-section>
+                                        <q-item-section class="col-md-auto q-mx-md"
+                                            style="display: flex; flex-direction: row; align-content: center;"
+                                            @click="goToID(`blog.html?bid=${v.bid}`)">
+                                            <q-badge color="teal"><b>{{v.like_count}}</b></q-badge>
+                                            <q-badge color="blue">点赞</q-badge>
+                                            <q-badge color="teal"><b>{{v.favorite_count}}</b></q-badge>
+                                            <q-badge color="orange">收藏</q-badge>
+                                            <q-badge color="teal"><b>{{v.view_count}}</b></q-badge>
+                                            <q-badge color="purple-5">查看</q-badge>
+                                        </q-item-section>
+                                    </q-item>
+                                </q-list>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </q-page-container>
+        </q-layout>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="vue.js"></script>
+    <script src="quasar.js"></script>
+    <!-- <script>
+        function setInitialScale() {
+            const screenWidth = window.screen.width;
+            const initialScale = screenWidth / 700;
+            const minScale = 0.5;
+            const maxScale = 2.0;
+            const scale = Math.min(maxScale, Math.max(minScale, initialScale));
+            document.querySelector('meta[name="viewport"]').setAttribute(
+                'content', 
+                `width=700, initial-scale=${scale}, minimum-scale=${minScale}, maximum-scale=${maxScale}`
+            );
+        }
+        window.addEventListener('load', setInitialScale);
+        window.addEventListener('resize', setInitialScale);
+    </script> -->
+    <script>
+        const App = {
+            data() {
+                return {
+                    sessionStorage_token: sessionStorage.getItem('token'),
+                    sessionStorage_uid: sessionStorage.getItem('uid'),
+                    sessionStorage_cover_url: sessionStorage.getItem('cover_url'),
+                    sessionStorage_avatar_url: sessionStorage.getItem('avatar_url') ? sessionStorage.getItem('avatar_url') : 'https://api.ottohub.cn/public/img/avatar_default.jpg',
+                    // 跳转登录
+                    goToLogin() {
+                        window.open('login.html?from=' + encodeURIComponent(window.location.href), '_self');
+                    },
+                    // 跳转方法
+                    goToID(target) {
+                        window.open(target, '_self');
+                    },
+                    // 重新加载页面
+                    reload() {
+                        window.open(window.location.href, '_self');
+                    },
+                    // 随机动态
+                    random_blog_list: async () => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'blog',
+                            action: 'random_blog_list',
+                            num: 8
+                        };
+                        const response = await axios.get(url, { params });
+                        this.blog_list = response.data.blog_list;
+                    },
+                    // 随机动态搜索事件
+                    _random_blog_list: () => {
+                        this.random_blog_list();
+                    },
+                    // 最新动态
+                    new_blog_list: async (offset) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'blog',
+                            action: 'new_blog_list',
+                            offset: offset,
+                            num: 8
+                        };
+                        const response = await axios.get(url, { params });
+                        this.blog_list = response.data.blog_list;
+                    },
+                    // 最新动态搜索事件
+                    _new_blog_list: (offset) => {
+                        this.new_blog_list(offset);
+                    },
+                    // 热门动态
+                    popular_blog_list: async (offset, time_limit) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'blog',
+                            action: 'popular_blog_list',
+                            offset: offset,
+                            num: 8,
+                            time_limit: time_limit
+                        };
+                        const response = await axios.get(url, { params });
+                        this.blog_list = response.data.blog_list;
+                    },
+                    // 热门动态搜索事件
+                    _popular_blog_list: (offset, time_limit) => {
+                        this.popular_blog_list(offset, time_limit);
+                    },
+                    // 搜索动态
+                    search_blog_list: async (search_term) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'blog',
+                            action: 'search_blog_list',
+                            search_term: search_term,
+                            num: 8
+                        };
+                        const response = await axios.get(url, { params });
+                        this.blog_list = response.data.blog_list;
+                    },
+                    // 搜索动态搜索事件
+                    _search_blog_list: (search_term) => {
+                        this.search_blog_list(search_term);
+                    },
+                    // 用户动态
+                    user_blog_list: async (uid, offset) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'blog',
+                            action: 'user_blog_list',
+                            uid: uid,
+                            offset: offset,
+                            num: 8
+                        };
+                        const response = await axios.get(url, { params });
+                        this.blog_list = response.data.blog_list;
+                    },
+                    // 用户动态搜索事件
+                    _user_blog_list: (uid, offset) => {
+                        this.user_blog_list(uid, offset);
+                    },
+                    blog_list: [
+                    ],
+                    type: null,
+                    category: null,
+                    offset: null,
+                    time_limit: '7',
+                    search_term: null,
+                    uid: null,
+                    // 未读消息数
+                    new_message_num: async (token) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'im',
+                            action: 'new_message_num',
+                            token: token,
+                        };
+                        const response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            return;
+                        }
+                        else {
+                            this.new_message_num_ = response.data.new_message_num;
+                        }
+                    },
+                    new_message_num_: null,
+                    // 更改offset，不刷新页面
+                    changeOffset(type, offsetChange) {
+                        if (type === '2') {
+                            // 最新动态
+                            let newOffset = parseInt(this.offset) + offsetChange;
+                            if (newOffset < 0) {
+                                newOffset = 0;
+                            }
+                            this.offset = newOffset;
+                            this._new_blog_list(this.offset);
+                        } else if (type === '3') {
+                            // 热门动态
+                            let newOffset = parseInt(this.offset) + offsetChange;
+                            if (newOffset < 0) {
+                                newOffset = 0;
+                            }
+                            this.offset = newOffset;
+                            this._popular_blog_list(this.offset, this.time_limit);
+                        } else if (type === '5') {
+                            // 用户动态
+                            let newOffset = parseInt(this.offset) + offsetChange;
+                            if (newOffset < 0) {
+                                newOffset = 0;
+                            }
+                            this.offset = newOffset;
+                            this._user_blog_list(this.uid, this.offset);
+                        }
+                    },
+                    goTo_user_blog_list(uid) {
+                        this.uid = uid;
+                        this.goToID('blog_list.html?type=5&uid=' + this.uid + '&offset=0&num=8');
+                    },
+                };
+            },
+            mounted() {
+                const currentUrl = new URL(window.location.href);
+                this.type = currentUrl.searchParams.get('type');
+                this.category = currentUrl.searchParams.get('category');
+                this.offset = currentUrl.searchParams.get('offset');
+                this.time_limit = currentUrl.searchParams.get('time_limit');
+                this.search_term = currentUrl.searchParams.get('search_term');
+                this.uid = currentUrl.searchParams.get('uid');
+                if (this.type === '1') {
+                    // 随机动态
+                    this._random_blog_list();
+                } else if (this.type === '2') {
+                    // 最新动态
+                    this._new_blog_list(this.offset);
+                } else if (this.type === '3') {
+                    // 热门动态
+                    this._popular_blog_list(this.offset, this.time_limit);
+                } else if (this.type === '4') {
+                    // 搜索动态
+                    this._search_blog_list(this.search_term);
+                } else if (this.type === '5') {
+                    // 用户动态
+                    this._user_blog_list(this.uid, this.offset);
+                } else {
+                    this._random_blog_list();
+                }
+                if (this.sessionStorage_token) {
+                    setInterval(() => {
+                        this.new_message_num(this.sessionStorage_token);
+                    }, 5000);
+                }
+            },
+            computed: {
+                innerWidth() {
+                    return window.innerWidth;
+                }
+            }
+        };
+        const app = Vue.createApp(App);
+
+        app.use(Quasar)
+        app.mount('#q-app')
+    </script>
+</body>
+
+</html>

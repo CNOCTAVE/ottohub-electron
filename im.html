@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+
+<!-- ottohub-electron is an open source ottohub.cn client packed by electron
+Copyright (C) 2024-2025  Yu Hongbo, CNOCTAVE
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
+
+<html>
+
+<head>
+    <title>ottohub-electron</title>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1">
+    <meta name="theme-color" content="#00B4FF">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="msapplication-TileImage" content="/favicon.ico">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="apple-mobile-web-app-title" content="Octave中文网">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="title" content="Octave中文网" data-qmeta="title">
+    <meta property="og:title" content="Octave中文网" data-qmeta="ogTitle">
+    <meta name="twitter:title" content="Octave中文网" data-qmeta="twitterTitle">
+    <meta name="description" content="Octave中文网是一个面向中文Octave开发者的交流平台，拥有中文Octave文档、中文Octave论坛和中文Octave新闻等特色。"
+        data-qmeta="description">
+    <meta property="og:description" content="Octave中文网是一个面向中文Octave开发者的交流平台，拥有中文Octave文档、中文Octave论坛和中文Octave新闻等特色。"
+        data-qmeta="ogDesc">
+    <meta name="twitter:description" content="Octave中文网是一个面向中文Octave开发者的交流平台，拥有中文Octave文档、中文Octave论坛和中文Octave新闻等特色。"
+        data-qmeta="twitterDesc">
+    <link href="MaterialIcons.css" rel="stylesheet" type="text/css">
+    <link href="fontawesome/fontawesome5.css" rel="stylesheet" type="text/css">
+    <link href="fontawesome/fontawesome6.css" rel="stylesheet" type="text/css">
+    <link href="animate.css" rel="stylesheet" type="text/css">
+    <link href="quasar.css" rel="stylesheet" type="text/css">
+    <link href="main.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flv.js@latest/dist/flv.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/danmaku/dist/danmaku.min.js"></script>
+</head>
+
+<body>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/dplayer/dist/DPlayer.min.css">
+    <!-- <style>
+        #dplayer {
+            width: 800px;
+            height: 450px;
+            margin: 0;
+        }
+    </style> -->
+    <div id="q-app">
+        <q-layout view="hHh LpR fFf">
+            <div class="q-ma-md navbar_div">
+                <q-input filled v-model="text" label="万能搜索" style="width: 100%; margin-right: 0;"
+                    v-show="innerWidth <= 1080">
+                    <template v-slot:append>
+                        <q-btn color="primary" @click="goToID(`search.html?keyword=${text}`)">
+                            <q-icon left name="search"></q-icon>
+                            <div>搜索</div>
+                        </q-btn>
+                    </template>
+                </q-input>
+                <div class="avatar_div">
+                    <q-avatar color="green" text-color="white" icon="tv"></q-avatar>
+                    <div>视频</div>
+                    <q-popup-proxy>
+                        <q-banner>
+                            <q-list>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=1&category=1')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="window"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>分区视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=2')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="shuffle"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>随机视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=3&offset=0')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="access_time"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>最新视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=4&offset=0&time_limit=7')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="bar_chart"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>本周热门</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=4&offset=0&time_limit=30')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="trending_up"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>本月热门</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=4&offset=0&time_limit=90')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="whatshot"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>本季热门</q-item-section>
+                                </q-item>
+                            </q-list>
+                        </q-banner>
+                    </q-popup-proxy>
+                </div>
+                <div class="avatar_div" @click="goToID('blog_list.html?type=1')">
+                    <q-avatar color="red" text-color="white" icon="create"></q-avatar>
+                    <div>动态</div>
+                </div>
+                <q-input filled v-model="text" label="万能搜索" v-show="innerWidth > 1080">
+                    <template v-slot:append>
+                        <q-btn color="primary" @click="goToID(`search.html?keyword=${text}`)">
+                            <q-icon left name="search"></q-icon>
+                            <div>搜索</div>
+                        </q-btn>
+                    </template>
+                </q-input>
+                <div class="avatar_div">
+                    <q-avatar color="teal" text-color="white" icon="menu">
+                        <q-badge color="red" floating v-show="new_message_num_ > 0">{{new_message_num_}}</q-badge>
+                    </q-avatar>
+                    <div>其他</div>
+                    <q-popup-proxy>
+                        <q-banner>
+                            <q-list>
+                                <q-item clickable v-ripple @click="goToID('im.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="teal" name="sms"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>消息</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('my.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="purple-12" name="man"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>我的</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('admin.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="settings"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>管理页面</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('submit_video.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="green" name="tv"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>发布视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('submit_blog.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="purple-12" name="create"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>发布动态</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('docs/index.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="yellow-10" name="help"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>使用帮助</q-item-section>
+                                </q-item>
+                            </q-list>
+                        </q-banner>
+                    </q-popup-proxy>
+                </div>
+                <div class="avatar_div" @click="goToLogin()">
+                    <q-avatar class="cursor-pointer">
+                        <img :src="sessionStorage_avatar_url">
+                    </q-avatar>
+                </div>
+            </div>
+            <q-separator></q-separator>
+            <q-page-container>
+                <div class="q-ma-md text-h4">
+                    <div class="text-h4">消息</div>
+                    <q-separator></q-separator>
+                    <q-expansion-item
+                        @click="unread_message_list_offset=0; unread_message_list(sessionStorage_token, '0', '5');">
+                        <template v-slot:header>
+                            <q-item-section avatar>
+                                <q-avatar icon="sms" color="primary" text-color="white" />
+                            </q-item-section>
+                            <q-item-section>
+                                未读消息
+                            </q-item-section>
+                        </template>
+                        <div class="q-mx-md refreshbar_div">
+                            <div class="text-h6 text-start">未读消息</div>
+                            <q-btn color="primary" icon="west" label="上一页"
+                                @click="changeOffset('unread_message_list', -5)"></q-btn>
+                            <div>&nbsp;</div>
+                            <q-btn color="primary" icon-right="east" label="下一页"
+                                @click="changeOffset('unread_message_list', 5)"></q-btn>
+                        </div>
+                        <div class="flexcards-container">
+                            <q-list style="width: 100%">
+                                <q-item clickable v-ripple v-for="(v, k) in unread_message_list_" :key="k"
+                                    style="border-bottom:1px solid rgb(226, 226, 226);"
+                                    @click="read_message(sessionStorage_token, v.msg_id)">
+                                    <q-item-section style="max-width: 50px;" class="col-md-auto"
+                                        @click="goToID(`search.html?keyword=${v.sender ? v.sender : v.receiver}`)">
+                                        <q-avatar color="teal" text-color="white" icon="person"></q-avatar>
+                                    </q-item-section>
+                                    <q-item-section>
+                                        <div style="line-break: anywhere;" class="text-h6">
+                                            <i><b>{{v.sender_name}}</b></i>
+                                        </div>
+                                        <div style="line-break: anywhere;" class="text-subtitle1">{{v.content}}</div>
+                                    </q-item-section>
+                                </q-item>
+                            </q-list>
+                        </div>
+                    </q-expansion-item>
+                    <q-separator></q-separator>
+                    <q-expansion-item
+                        @click="read_message_list_offset=0; read_message_list(sessionStorage_token, '0', '5');">
+                        <template v-slot:header>
+                            <q-item-section avatar>
+                                <q-avatar icon="sms" color="primary" text-color="white" />
+                            </q-item-section>
+                            <q-item-section>
+                                已读消息
+                            </q-item-section>
+                        </template>
+                        <div class="q-mx-md refreshbar_div">
+                            <div class="text-h6 text-start">已读消息</div>
+                            <q-btn color="primary" icon="west" label="上一页"
+                                @click="changeOffset('read_message_list', -5)"></q-btn>
+                            <div>&nbsp;</div>
+                            <q-btn color="primary" icon-right="east" label="下一页"
+                                @click="changeOffset('read_message_list', 5)"></q-btn>
+                        </div>
+                        <div class="flexcards-container">
+                            <q-list style="width: 100%">
+                                <q-item clickable v-ripple v-for="(v, k) in read_message_list_" :key="k"
+                                    style="border-bottom:1px solid rgb(226, 226, 226);"
+                                    @click="read_message(sessionStorage_token, v.msg_id)">
+                                    <q-item-section style="max-width: 50px;" class="col-md-auto"
+                                        @click="goToID(`search.html?keyword=${v.sender ? v.sender : v.receiver}`)">
+                                        <q-avatar color="teal" text-color="white" icon="person"></q-avatar>
+                                    </q-item-section>
+                                    <q-item-section>
+                                        <div style="line-break: anywhere;" class="text-h6">
+                                            <i><b>{{v.sender_name}}</b></i>
+                                        </div>
+                                        <div style="line-break: anywhere;" class="text-subtitle1">{{v.content}}</div>
+                                    </q-item-section>
+                                </q-item>
+                            </q-list>
+                        </div>
+                    </q-expansion-item>
+                    <q-separator></q-separator>
+                    <q-expansion-item
+                        @click="sent_message_list_offset=0; sent_message_list(sessionStorage_token, '0', '5');">
+                        <template v-slot:header>
+                            <q-item-section avatar>
+                                <q-avatar icon="sms" color="primary" text-color="white" />
+                            </q-item-section>
+                            <q-item-section>
+                                已发消息
+                            </q-item-section>
+                        </template>
+                        <div class="q-mx-md refreshbar_div">
+                            <div class="text-h6 text-start">已发消息</div>
+                            <q-btn color="primary" icon="west" label="上一页"
+                                @click="changeOffset('sent_message_list', -5)"></q-btn>
+                            <div>&nbsp;</div>
+                            <q-btn color="primary" icon-right="east" label="下一页"
+                                @click="changeOffset('sent_message_list', 5)"></q-btn>
+                        </div>
+                        <div class="flexcards-container">
+                            <q-list style="width: 100%">
+                                <q-item clickable v-ripple v-for="(v, k) in sent_message_list_" :key="k"
+                                    style="border-bottom:1px solid rgb(226, 226, 226);"
+                                    @click="read_message(sessionStorage_token, v.msg_id)">
+                                    <q-item-section style="max-width: 50px;" class="col-md-auto"
+                                        @click="goToID(`search.html?keyword=${v.sender ? v.sender : v.receiver}`)">
+                                        <q-avatar color="teal" text-color="white" icon="person"></q-avatar>
+                                    </q-item-section>
+                                    <q-item-section>
+                                        <div style="line-break: anywhere;" class="text-h6">
+                                            <i><b>{{v.sender_name}}</b></i>
+                                        </div>
+                                        <div style="line-break: anywhere;" class="text-subtitle1">{{v.content}}</div>
+                                    </q-item-section>
+                                </q-item>
+                            </q-list>
+                        </div>
+                    </q-expansion-item>
+                    <q-separator></q-separator>
+                    <q-btn color="primary" style="width:100%; margin-bottom: 10px;"
+                        @click="receiver=null; message=null; msgbox_send=true;">
+                        <q-icon left name="send"></q-icon>
+                        <div>发送消息</div>
+                    </q-btn>
+                </div>
+            </q-page-container>
+        </q-layout>
+        <!-- 读取消息弹窗 -->
+        <q-dialog v-model="msgbox" full-width>
+            <q-card style="background-color: #f1f1f1;">
+                <q-card-section class="row items-center q-pb-none">
+                    <div class="text-h6">消息内容</div>
+                    <q-space></q-space>
+                    <q-btn icon="close" flat round dense v-close-popup></q-btn>
+                </q-card-section>
+
+                <q-card-section class="q-pt-none">
+                    <div style="line-break: anywhere;" class="text-h6">
+                        <i><b>{{msg.sender_name}}</b></i>
+                    </div>
+                    <div style="line-break: anywhere;" class="text-subtitle1" v-html="genVHTML(msg.content)"></div>
+                    <q-btn color="primary" style="width:100%; margin-bottom: 10px;"
+                        @click="receiver=msg.sender; message=null; msgbox_send=true;">
+                        <q-icon left name="send"></q-icon>
+                        <div>回复消息</div>
+                    </q-btn>
+                </q-card-section>
+            </q-card>
+        </q-dialog>
+        <!-- 发送消息弹窗 -->
+        <q-dialog v-model="msgbox_send" full-width>
+            <q-card style="background-color: #f1f1f1;">
+                <q-card-section class="row items-center q-pb-none">
+                    <div class="text-h6">发送消息</div>
+                    <q-space></q-space>
+                    <q-btn icon="close" flat round dense v-close-popup></q-btn>
+                </q-card-section>
+
+                <q-card-section class="q-pt-none">
+                    <q-input filled v-model="receiver" label="接收者UID"
+                        style="width:100%; margin-bottom: 10px;"></q-input>
+                    <q-input filled v-model="message" label="消息内容" style="width:100%; margin-bottom: 10px;"></q-input>
+                    <q-btn color="primary" style="width:100%; margin-bottom: 10px;"
+                        @click="send_message(sessionStorage_token, receiver, message)">
+                        <q-icon left name="send"></q-icon>
+                        <div>发送</div>
+                    </q-btn>
+                </q-card-section>
+            </q-card>
+        </q-dialog>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="vue.js"></script>
+    <script src="quasar.js"></script>
+    <!-- <script>
+        function setInitialScale() {
+            const screenWidth = window.screen.width;
+            const initialScale = screenWidth / 700;
+            const minScale = 0.5;
+            const maxScale = 2.0;
+            const scale = Math.min(maxScale, Math.max(minScale, initialScale));
+            document.querySelector('meta[name="viewport"]').setAttribute(
+                'content', 
+                `width=700, initial-scale=${scale}, minimum-scale=${minScale}, maximum-scale=${maxScale}`
+            );
+        }
+        window.addEventListener('load', setInitialScale);
+        window.addEventListener('resize', setInitialScale);
+    </script> -->
+    <script>
+        const App = {
+            data() {
+                return {
+                    sessionStorage_token: sessionStorage.getItem('token'),
+                    sessionStorage_uid: sessionStorage.getItem('uid'),
+                    sessionStorage_cover_url: sessionStorage.getItem('cover_url'),
+                    sessionStorage_avatar_url: sessionStorage.getItem('avatar_url') ? sessionStorage.getItem('avatar_url') : 'https://api.ottohub.cn/public/img/avatar_default.jpg',
+                    // 跳转登录
+                    goToLogin() {
+                        window.open('login.html?from=' + encodeURIComponent(window.location.href), '_self');
+                    },
+                    // 跳转方法
+                    goToID(target) {
+                        window.open(target, '_self');
+                    },
+                    // 已读消息列表
+                    read_message_list: async (token, offset, num) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'im',
+                            action: 'read_message_list',
+                            token: token,
+                            offset: offset,
+                            num: num,
+                        };
+                        const response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            return;
+                        }
+                        this.read_message_list_ = response.data.read_message_list;
+                    },
+                    read_message_list_: [],
+                    // 未读消息列表
+                    unread_message_list: async (token, offset, num) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'im',
+                            action: 'unread_message_list',
+                            token: token,
+                            offset: offset,
+                            num: num,
+                        };
+                        const response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            return;
+                        }
+                        this.unread_message_list_ = response.data.unread_message_list;
+                    },
+                    unread_message_list_: [],
+                    // 已发消息列表
+                    sent_message_list: async (token, offset, num) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'im',
+                            action: 'sent_message_list',
+                            token: token,
+                            offset: offset,
+                            num: num,
+                        };
+                        const response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            return;
+                        }
+                        this.sent_message_list_ = response.data.sent_message_list;
+                    },
+                    sent_message_list_: [],
+                    // 发送消息
+                    send_message: async (token, receiver, message) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'im',
+                            action: 'send_message',
+                            token: token,
+                            receiver: receiver,
+                            message: message,
+                        };
+                        const response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_receiver': '错误的接收者',
+                                'too_short_message': '信息太短',
+                                'too_long_message': '信息太长',
+                                'warn': '触发敏感词',
+                                'system_error': '系统错误',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '发送消息失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '发送消息成功'
+                            });
+                        }
+                    },
+                    // 读取消息
+                    read_message: async (token, msg_id) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'im',
+                            action: 'read_message',
+                            token: token,
+                            msg_id: msg_id,
+                        };
+                        const response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_msg_id': '错误的消息编号',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '读取消息失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            this.msg = response.data;
+                            this.msgbox = true;
+                        }
+                    },
+                    // 未读消息数
+                    new_message_num: async (token) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'im',
+                            action: 'new_message_num',
+                            token: token,
+                        };
+                        const response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            return;
+                        }
+                        else {
+                            this.new_message_num_ = response.data.new_message_num;
+                        }
+                    },
+                    new_message_num_: null,
+                    // 更改offset，不刷新页面
+                    changeOffset(type, offsetChange) {
+                        if (type === 'unread_message_list') {
+                            let newOffset = parseInt(this.unread_message_list_offset) + offsetChange;
+                            if (newOffset < 0) {
+                                newOffset = 0;
+                            }
+                            this.unread_message_list_offset = newOffset;
+                            this.unread_message_list(this.sessionStorage_token, this.unread_message_list_offset, '5');
+                        }
+                        else if (type === 'read_message_list') {
+                            let newOffset = parseInt(this.read_message_list_offset) + offsetChange;
+                            if (newOffset < 0) {
+                                newOffset = 0;
+                            }
+                            this.read_message_list_offset = newOffset;
+                            this.read_message_list(this.sessionStorage_token, this.read_message_list_offset, '5');
+                        }
+                        else if (type === 'sent_message_list') {
+                            let newOffset = parseInt(this.sent_message_list_offset) + offsetChange;
+                            if (newOffset < 0) {
+                                newOffset = 0;
+                            }
+                            this.sent_message_list_offset = newOffset;
+                            this.sent_message_list(this.sessionStorage_token, this.sent_message_list_offset, '5');
+                        }
+                    },
+                    unread_message_list_offset: 0,
+                    read_message_list_offset: 0,
+                    sent_message_list_offset: 0,
+                    msgbox: false,
+                    msgbox_send: false,
+                    receiver: null,
+                    message: null,
+                    genVHTML(msg) {
+                        return msg.replace(/(UID:)(\d+)/g, '<a href="personal_page.html?uid=$2" target="_blank" class="text-primary">$1$2</a>')
+                            .replace(/(VID:)(\d+)/g, '<a href="video_player.html?vid=$2" target="_blank" class="text-primary">$1$2</a>')
+                            .replace(/(BID:)(\d+)/g, '<a href="blog.html?bid=$2" target="_blank" class="text-primary">$1$2</a>');
+                    },
+                };
+            },
+            mounted() {
+                if (!this.sessionStorage_token){
+                    this.goToLogin();
+                }
+                const currentUrl = new URL(window.location.href);
+                this.uid = currentUrl.searchParams.get('uid');
+                if (this.uid) {
+                    this.receiver = this.uid;
+                    this.msgbox_send = true;
+                }
+                if (this.sessionStorage_token) {
+                    setInterval(() => {
+                        this.new_message_num(this.sessionStorage_token);
+                    }, 5000);
+                }
+            },
+            computed: {
+                innerWidth() {
+                    return window.innerWidth;
+                },
+            }
+        };
+        const app = Vue.createApp(App);
+
+        app.use(Quasar)
+        app.mount('#q-app')
+    </script>
+</body>
+
+</html>

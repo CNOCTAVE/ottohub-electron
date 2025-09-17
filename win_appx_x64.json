@@ -1,0 +1,36 @@
+{
+    "appId": "cn.cnoctave.ottohub-electron",
+    "productName": "ottohub-electron",
+    "buildNumber": "2025.9.0",
+    "icon": "logo.png",
+    "directories": {
+        "output": "dist"
+    },
+    "publish": [
+        {
+        "provider": "github",
+        "owner": "CNOCTAVE",
+        "repo": "ottohub-electron",
+        "releaseType": "release"
+        }
+    ],
+    "win": {
+        "artifactName": "${name}-${version}-${os}-${arch}-appx.${ext}",
+        "target": [
+            {
+                "target": "appx",
+                "arch": [
+                    "x64"
+                ]
+            }
+        ]
+    },
+    "appx": {
+        "applicationId": "marked.reader",
+        "identityName": "marked.reader",
+        "displayName": "ottohub.cn client",
+        "languages": ["zh-cn"],
+        "backgroundColor": "transparent",
+        "publisherDisplayName": "***********"
+    }
+}

@@ -1,0 +1,46 @@
+{
+    "appId": "cn.cnoctave.ottohub-electron",
+    "productName": "ottohub-electron",
+    "buildNumber": "2025.9.0",
+    "icon": "logo.png",
+    "directories": {
+        "output": "dist"
+    },
+    "publish": [
+        {
+        "provider": "github",
+        "owner": "CNOCTAVE",
+        "repo": "ottohub-electron",
+        "releaseType": "release"
+        }
+    ],
+    "mac": {
+        "artifactName": "${name}-${version}-${os}-${arch}.${ext}",
+        "target": [
+            {
+                "target": "tar.xz",
+                "arch": [
+                    "universal"
+                ]
+            },
+            {
+                "target": "tar.lz",
+                "arch": [
+                    "universal"
+                ]
+            },
+            {
+                "target": "tar.gz",
+                "arch": [
+                    "universal"
+                ]
+            },
+            {
+                "target": "tar.bz2",
+                "arch": [
+                    "universal"
+                ]
+            }
+        ]
+    }
+}

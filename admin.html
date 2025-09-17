@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+
+<!-- ottohub-electron is an open source ottohub.cn client packed by electron
+Copyright (C) 2024-2025  Yu Hongbo, CNOCTAVE
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
+
+<html>
+
+<head>
+    <title>ottohub-electron</title>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1">
+    <meta name="theme-color" content="#00B4FF">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="msapplication-TileImage" content="/favicon.ico">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="apple-mobile-web-app-title" content="Octave中文网">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="title" content="Octave中文网" data-qmeta="title">
+    <meta property="og:title" content="Octave中文网" data-qmeta="ogTitle">
+    <meta name="twitter:title" content="Octave中文网" data-qmeta="twitterTitle">
+    <meta name="description" content="Octave中文网是一个面向中文Octave开发者的交流平台，拥有中文Octave文档、中文Octave论坛和中文Octave新闻等特色。"
+        data-qmeta="description">
+    <meta property="og:description" content="Octave中文网是一个面向中文Octave开发者的交流平台，拥有中文Octave文档、中文Octave论坛和中文Octave新闻等特色。"
+        data-qmeta="ogDesc">
+    <meta name="twitter:description" content="Octave中文网是一个面向中文Octave开发者的交流平台，拥有中文Octave文档、中文Octave论坛和中文Octave新闻等特色。"
+        data-qmeta="twitterDesc">
+    <link href="MaterialIcons.css" rel="stylesheet" type="text/css">
+    <link href="fontawesome/fontawesome5.css" rel="stylesheet" type="text/css">
+    <link href="fontawesome/fontawesome6.css" rel="stylesheet" type="text/css">
+    <link href="animate.css" rel="stylesheet" type="text/css">
+    <link href="quasar.css" rel="stylesheet" type="text/css">
+    <link href="main.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div id="q-app">
+        <q-layout view="hHh LpR fFf">
+            <div class="q-ma-md navbar_div">
+                <q-input filled v-model="text" label="万能搜索" style="width: 100%; margin-right: 0;"
+                    v-show="innerWidth <= 1080">
+                    <template v-slot:append>
+                        <q-btn color="primary" @click="goToID(`search.html?keyword=${text}`)">
+                            <q-icon left name="search"></q-icon>
+                            <div>搜索</div>
+                        </q-btn>
+                    </template>
+                </q-input>
+                <div class="avatar_div">
+                    <q-avatar color="green" text-color="white" icon="tv"></q-avatar>
+                    <div>视频</div>
+                    <q-popup-proxy>
+                        <q-banner>
+                            <q-list>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=1&category=1')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="window"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>分区视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=2')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="shuffle"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>随机视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=3&offset=0')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="access_time"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>最新视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=4&offset=0&time_limit=7')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="bar_chart"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>本周热门</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=4&offset=0&time_limit=30')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="trending_up"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>本月热门</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=4&offset=0&time_limit=90')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="whatshot"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>本季热门</q-item-section>
+                                </q-item>
+                            </q-list>
+                        </q-banner>
+                    </q-popup-proxy>
+                </div>
+                <div class="avatar_div" @click="goToID('blog_list.html?type=1')">
+                    <q-avatar color="red" text-color="white" icon="create"></q-avatar>
+                    <div>动态</div>
+                </div>
+                <q-input filled v-model="text" label="万能搜索" v-show="innerWidth > 1080">
+                    <template v-slot:append>
+                        <q-btn color="primary" @click="goToID(`search.html?keyword=${text}`)">
+                            <q-icon left name="search"></q-icon>
+                            <div>搜索</div>
+                        </q-btn>
+                    </template>
+                </q-input>
+                <div class="avatar_div">
+                    <q-avatar color="teal" text-color="white" icon="menu">
+                        <q-badge color="red" floating v-show="new_message_num_ > 0">{{new_message_num_}}</q-badge>
+                    </q-avatar>
+                    <div>其他</div>
+                    <q-popup-proxy>
+                        <q-banner>
+                            <q-list>
+                                <q-item clickable v-ripple @click="goToID('im.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="teal" name="sms"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>消息</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('my.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="purple-12" name="man"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>我的</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('admin.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="settings"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>管理页面</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('submit_video.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="green" name="tv"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>发布视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('submit_blog.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="purple-12" name="create"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>发布动态</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('docs/index.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="yellow-10" name="help"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>使用帮助</q-item-section>
+                                </q-item>
+                            </q-list>
+                        </q-banner>
+                    </q-popup-proxy>
+                </div>
+                <div class="avatar_div" @click="goToLogin()">
+                    <q-avatar class="cursor-pointer">
+                        <img :src="sessionStorage_avatar_url">
+                    </q-avatar>
+                </div>
+            </div>
+            <q-separator></q-separator>
+            <q-page-container>
+                <div class="q-ma-md" style="display: flex; 
+                        flex-direction: row;
+                        align-content: center;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        justify-content: flex-start;" v-show="sessionStorage_token">
+                    <div class="text-h4">管理页面</div>
+                    <q-table title="管理动态列表" :rows="blog_list_rows" :columns="blog_list_columns" row-key="bid"
+                        no-data-label="无数据" :pagination-label="setPaginationLabel_5" rows-per-page-label="每页条数："
+                        style="width:100%;">
+                        <template v-slot:top-right>
+                            <q-btn color="primary" icon="west" label="上一页"
+                                @click="changeOffset('blog_list', -5)"></q-btn>
+                            <div>&nbsp;</div>
+                            <q-btn color="primary" icon-right="east" label="下一页"
+                                @click="changeOffset('blog_list', 5)"></q-btn>
+                        </template>
+                        <template v-slot:body-cell-admin_data="props">
+                            <q-td :props="props">
+                                <q-badge color="green" v-if="props.row.is_deleted==='0'">未删除</q-badge>
+                                <q-badge color="red" v-else>已删除</q-badge>
+                                <q-badge color="green" v-if="props.row.audit_status==='1'">已审核</q-badge>
+                                <q-badge color="red" v-else>未审核</q-badge>
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-cover_url="props">
+                            <q-td :props="props">
+                                <q-img :src="props.row.cover_url" spinner-color="white"
+                                    style="height: 20vh; width: 16vw; min-width: 320px; min-height: 240px;">
+                                </q-img>
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-title="props">
+                            <q-td :props="props">
+                                <div>{{props.row.title}}</div>
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-content="props">
+                            <q-td :props="props">
+                                <div>{{props.row.content}}</div>
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-options="props">
+                            <q-td :props="props">
+                                <q-btn color="primary" icon="search" label="查看"
+                                    @click="goToID(`blog.html?bid=${props.row.bid}`)">
+                                </q-btn>
+                                <div>&nbsp;</div>
+                                <q-btn color="red" @click="delete_blog(props.row.bid, sessionStorage_token)">
+                                    <q-icon left name="delete"></q-icon>
+                                    <div>删除动态</div>
+                                </q-btn>
+                                <div>&nbsp;</div>
+                                <q-btn color="primary" @click="appeal_blog(props.row.bid, sessionStorage_token)">
+                                    <q-icon left name="restore_page"></q-icon>
+                                    <div>申诉动态</div>
+                                </q-btn>
+                                <div>&nbsp;</div>
+                                <q-btn color="red" @click="report_blog(props.row.bid, sessionStorage_token)">
+                                    <q-icon left name="report"></q-icon>
+                                    <div>举报动态</div>
+                                </q-btn>
+                                <div>&nbsp;</div>
+                                <q-btn color="green" @click="approve_blog(props.row.bid, sessionStorage_token)">
+                                    <q-icon left name="check"></q-icon>
+                                    <div>过审动态</div>
+                                </q-btn>
+                                <div>&nbsp;</div>
+                                <q-btn color="red" @click="reject_blog(props.row.bid, sessionStorage_token)">
+                                    <q-icon left name="close"></q-icon>
+                                    <div>打回动态</div>
+                                </q-btn>
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-info="props">
+                            <q-td :props="props">
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <div><b>OB{{props.row.bid}}</b></div>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <q-avatar class="cursor-pointer"
+                                        @click="goToID(`search.html?keyword=${props.row.uid}`)">
+                                        <img :src="props.row.avatar_url">
+                                    </q-avatar>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <div><b>UID{{props.row.uid}}</b></div>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <div>时间：</div>
+                                    <div><b>{{props.row.time}}</b></div>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <q-badge color="teal"><b>{{props.row.like_count}}</b></q-badge>
+                                    <q-badge color="blue">点赞</q-badge>
+                                    <q-badge color="teal"><b>{{props.row.favorite_count}}</b></q-badge>
+                                    <q-badge color="orange">收藏</q-badge>
+                                    <q-badge color="teal"><b>{{props.row.view_count}}</b></q-badge>
+                                    <q-badge color="purple-5">查看</q-badge>
+                                </div>
+                            </q-td>
+                        </template>
+                    </q-table>
+                    <div>&nbsp;</div>
+                    <q-input filled v-model="bid" label="bid" style="width:100%; margin-bottom: 10px;">
+                        <template v-slot:append>
+                            <q-btn color="red" @click="delete_blog(bid, sessionStorage_token)">
+                                <q-icon left name="delete"></q-icon>
+                                <div>删除动态</div>
+                            </q-btn>
+                        </template>
+                    </q-input>
+                    <div>&nbsp;</div>
+                    <q-input filled v-model="bid" label="bid" style="width:100%; margin-bottom: 10px;">
+                        <template v-slot:append>
+                            <q-btn color="primary" @click="appeal_blog(bid, sessionStorage_token)">
+                                <q-icon left name="restore_page"></q-icon>
+                                <div>申诉动态</div>
+                            </q-btn>
+                        </template>
+                    </q-input>
+                    <div>&nbsp;</div>
+                    <q-input filled v-model="bid" label="bid" style="width:100%; margin-bottom: 10px;">
+                        <template v-slot:append>
+                            <q-btn color="red" @click="report_blog(bid, sessionStorage_token)">
+                                <q-icon left name="report"></q-icon>
+                                <div>举报动态</div>
+                            </q-btn>
+                        </template>
+                    </q-input>
+                    <div>&nbsp;</div>
+                    <q-input filled v-model="bid" label="bid" style="width:100%; margin-bottom: 10px;">
+                        <template v-slot:append>
+                            <q-btn color="green" @click="approve_blog(bid, sessionStorage_token)">
+                                <q-icon left name="check"></q-icon>
+                                <div>过审动态</div>
+                            </q-btn>
+                        </template>
+                    </q-input>
+                    <div>&nbsp;</div>
+                    <q-input filled v-model="bid" label="bid" style="width:100%; margin-bottom: 10px;">
+                        <template v-slot:append>
+                            <q-btn color="red" @click="reject_blog(bid, sessionStorage_token)">
+                                <q-icon left name="close"></q-icon>
+                                <div>打回动态</div>
+                            </q-btn>
+                        </template>
+                    </q-input>
+                    <div>&nbsp;</div>
+                    <q-table title="管理视频列表" :rows="video_list_rows" :columns="video_list_columns" row-key="vid"
+                        no-data-label="无数据" :pagination-label="setPaginationLabel_5" rows-per-page-label="每页条数："
+                        style="width:100%;">
+                        <template v-slot:top-right>
+                            <q-btn color="primary" icon="west" label="上一页"
+                                @click="changeOffset('video_list', -5)"></q-btn>
+                            <div>&nbsp;</div>
+                            <q-btn color="primary" icon-right="east" label="下一页"
+                                @click="changeOffset('video_list', 5)"></q-btn>
+                        </template>
+                        <template v-slot:body-cell-options="props">
+                            <q-td :props="props">
+                                <q-btn color="primary" icon="search" label="查看"
+                                    @click="goToID(`video_player.html?vid=${props.row.vid}`)"></q-btn>
+                                </q-btn>
+                                <div>&nbsp;</div>
+                                <q-btn color="red" @click="delete_video(props.row.vid, sessionStorage_token)">
+                                    <q-icon left name="delete"></q-icon>
+                                    <div>删除视频</div>
+                                </q-btn>
+                                <div>&nbsp;</div>
+                                <q-btn color="primary" @click="appeal_video(props.row.vid, sessionStorage_token)">
+                                    <q-icon left name="restore_page"></q-icon>
+                                    <div>申诉视频</div>
+                                </q-btn>
+                                <div>&nbsp;</div>
+                                <q-btn color="red" @click="report_video(props.row.vid, sessionStorage_token)">
+                                    <q-icon left name="report"></q-icon>
+                                    <div>举报视频</div>
+                                </q-btn>
+                                <div>&nbsp;</div>
+                                <q-btn color="green" @click="approve_video(props.row.vid, sessionStorage_token)">
+                                    <q-icon left name="check"></q-icon>
+                                    <div>过审视频</div>
+                                </q-btn>
+                                <div>&nbsp;</div>
+                                <q-btn color="red" @click="reject_video(props.row.vid, sessionStorage_token)">
+                                    <q-icon left name="close"></q-icon>
+                                    <div>打回视频</div>
+                                </q-btn>
+                                <div>&nbsp;</div>
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-admin_data="props">
+                            <q-td :props="props">
+                                <q-badge color="green" v-if="props.row.is_deleted==='0'">未删除</q-badge>
+                                <q-badge color="red" v-else>已删除</q-badge>
+                                <q-badge color="green" v-if="props.row.audit_status==='1'">已审核</q-badge>
+                                <q-badge color="red" v-else>未审核</q-badge>
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-cover_url="props">
+                            <q-td :props="props">
+                                <q-img :src="props.row.cover_url" spinner-color="white"
+                                    style="height: 20vh; width: 16vw; min-width: 320px; min-height: 240px;">
+                                </q-img>
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-info="props">
+                            <q-td :props="props">
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <div><b>OV{{props.row.vid}}</b></div>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <q-avatar class="cursor-pointer"
+                                        @click="goToID(`search.html?keyword=${props.row.uid}`)">
+                                        <img :src="props.row.avatar_url">
+                                    </q-avatar>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <div><b>UID{{props.row.uid}}</b></div>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <div>用户名：</div>
+                                    <div><b>{{props.row.username}}</b></div>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <div>标题：</div>
+                                    <div><b>{{props.row.title}}</b></div>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <div>时间：</div>
+                                    <div><b>{{props.row.time}}</b></div>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <q-badge color="teal"><b>{{props.row.like_count}}</b></q-badge>
+                                    <q-badge color="blue">点赞</q-badge>
+                                    <q-badge color="teal"><b>{{props.row.favorite_count}}</b></q-badge>
+                                    <q-badge color="orange">收藏</q-badge>
+                                    <q-badge color="teal"><b>{{props.row.view_count}}</b></q-badge>
+                                    <q-badge color="purple-5">查看</q-badge>
+                                </div>
+                            </q-td>
+                        </template>
+                    </q-table>
+                    <div>&nbsp;</div>
+                    <q-input filled v-model="vid" label="vid" style="width:100%; margin-bottom: 10px;">
+                        <template v-slot:append>
+                            <q-btn color="red" @click="delete_video(vid, sessionStorage_token)">
+                                <q-icon left name="delete"></q-icon>
+                                <div>删除视频</div>
+                            </q-btn>
+                        </template>
+                    </q-input>
+                    <div>&nbsp;</div>
+                    <q-input filled v-model="vid" label="vid" style="width:100%; margin-bottom: 10px;">
+                        <template v-slot:append>
+                            <q-btn color="primary" @click="appeal_video(vid, sessionStorage_token)">
+                                <q-icon left name="restore_page"></q-icon>
+                                <div>申诉视频</div>
+                            </q-btn>
+                        </template>
+                    </q-input>
+                    <div>&nbsp;</div>
+                    <q-input filled v-model="vid" label="vid" style="width:100%; margin-bottom: 10px;">
+                        <template v-slot:append>
+                            <q-btn color="red" @click="report_video(vid, sessionStorage_token)">
+                                <q-icon left name="report"></q-icon>
+                                <div>举报视频</div>
+                            </q-btn>
+                        </template>
+                    </q-input>
+                    <div>&nbsp;</div>
+                    <q-input filled v-model="vid" label="vid" style="width:100%; margin-bottom: 10px;">
+                        <template v-slot:append>
+                            <q-btn color="green" @click="approve_video(vid, sessionStorage_token)">
+                                <q-icon left name="check"></q-icon>
+                                <div>过审视频</div>
+                            </q-btn>
+                        </template>
+                    </q-input>
+                    <div>&nbsp;</div>
+                    <q-input filled v-model="vid" label="vid" style="width:100%; margin-bottom: 10px;">
+                        <template v-slot:append>
+                            <q-btn color="red" @click="reject_video(vid, sessionStorage_token)">
+                                <q-icon left name="close"></q-icon>
+                                <div>打回视频</div>
+                            </q-btn>
+                        </template>
+                    </q-input>
+                    <div>&nbsp;</div>
+                    <q-table title="审核头像列表" :rows="avatar_list_rows" :columns="avatar_list_columns" row-key="uid"
+                        no-data-label="无数据" :pagination-label="setPaginationLabel_5" rows-per-page-label="每页条数："
+                        style="width:100%;">
+                        <template v-slot:top-right>
+                            <q-btn color="primary" icon="west" label="上一页"
+                                @click="changeOffset('avatar_list', -5)"></q-btn>
+                            <div>&nbsp;</div>
+                            <q-btn color="primary" icon-right="east" label="下一页"
+                                @click="changeOffset('avatar_list', 5)"></q-btn>
+                        </template>
+                        <template v-slot:body-cell-avatar="props">
+                            <q-avatar class="cursor-pointer">
+                                <img :src="props.row.avatar_url">
+                            </q-avatar>
+                        </template>
+                        <template v-slot:body-cell-options="props">
+                            <q-td :props="props">
+                                <q-btn color="green" @click="approve_avatar(sessionStorage_token, props.row.uid)">
+                                    <q-icon left name="check"></q-icon>
+                                    <div>通过头像</div>
+                                </q-btn>
+                                <q-btn color="red" @click="reject_avatar(sessionStorage_token, props.row.uid)">
+                                    <q-icon left name="close"></q-icon>
+                                    <div>退回头像</div>
+                                </q-btn>
+                            </q-td>
+                        </template>
+                    </q-table>
+                    <div>&nbsp;</div>
+                    <q-input filled v-model="uid_of_avatar" label="uid_of_avatar"
+                        style="width:100%; margin-bottom: 10px;">
+                        <template v-slot:append>
+                            <q-btn color="green" @click="approve_avatar(sessionStorage_token, uid_of_avatar)">
+                                <q-icon left name="check"></q-icon>
+                                <div>通过头像</div>
+                            </q-btn>
+                            <q-btn color="red" @click="reject_avatar(sessionStorage_token, uid_of_avatar)">
+                                <q-icon left name="close"></q-icon>
+                                <div>退回头像</div>
+                            </q-btn>
+                        </template>
+                    </q-input>
+                    <q-table title="审核封面列表" :rows="cover_list_rows" :columns="cover_list_columns" row-key="uid"
+                        no-data-label="无数据" :pagination-label="setPaginationLabel_5" rows-per-page-label="每页条数："
+                        style="width:100%;">
+                        <template v-slot:top-right>
+                            <q-btn color="primary" icon="west" label="上一页"
+                                @click="changeOffset('cover_list', -5)"></q-btn>
+                            <div>&nbsp;</div>
+                            <q-btn color="primary" icon-right="east" label="下一页"
+                                @click="changeOffset('cover_list', 5)"></q-btn>
+                        </template>
+                        <template v-slot:body-cell-cover="props">
+                            <q-cover class="cursor-pointer">
+                                <img :src="props.row.cover_url">
+                            </q-cover>
+                        </template>
+                        <template v-slot:body-cell-options="props">
+                            <q-td :props="props">
+                                <q-btn color="green" @click="approve_cover(sessionStorage_token, props.row.uid)">
+                                    <q-icon left name="check"></q-icon>
+                                    <div>通过头像</div>
+                                </q-btn>
+                                <q-btn color="red" @click="reject_cover(sessionStorage_token, props.row.uid)">
+                                    <q-icon left name="close"></q-icon>
+                                    <div>退回头像</div>
+                                </q-btn>
+                            </q-td>
+                        </template>
+                    </q-table>
+                    <div>&nbsp;</div>
+                    <q-input filled v-model="uid_of_cover" label="uid_of_cover"
+                        style="width:100%; margin-bottom: 10px;">
+                        <template v-slot:append>
+                            <q-btn color="green" @click="approve_cover(sessionStorage_token, uid_of_cover)">
+                                <q-icon left name="check"></q-icon>
+                                <div>通过封面</div>
+                            </q-btn>
+                            <q-btn color="red" @click="reject_cover(sessionStorage_token, uid_of_cover)">
+                                <q-icon left name="close"></q-icon>
+                                <div>退回封面</div>
+                            </q-btn>
+                        </template>
+                    </q-input>
+                </div>
+            </q-page-container>
+        </q-layout>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="vue.js"></script>
+    <script src="quasar.js"></script>
+    <!-- <script>
+        function setInitialScale() {
+            const screenWidth = window.screen.width;
+            const initialScale = screenWidth / 700;
+            const minScale = 0.5;
+            const maxScale = 2.0;
+            const scale = Math.min(maxScale, Math.max(minScale, initialScale));
+            document.querySelector('meta[name="viewport"]').setAttribute(
+                'content', 
+                `width=700, initial-scale=${scale}, minimum-scale=${minScale}, maximum-scale=${maxScale}`
+            );
+        }
+        window.addEventListener('load', setInitialScale);
+        window.addEventListener('resize', setInitialScale);
+    </script> -->
+    <script>
+        const App = {
+            data() {
+                return {
+                    sessionStorage_token: sessionStorage.getItem('token'),
+                    sessionStorage_uid: sessionStorage.getItem('uid'),
+                    sessionStorage_cover_url: sessionStorage.getItem('cover_url'),
+                    sessionStorage_avatar_url: sessionStorage.getItem('avatar_url') ? sessionStorage.getItem('avatar_url') : 'https://api.ottohub.cn/public/img/avatar_default.jpg',
+                    // 跳转方法
+                    goToID(target) {
+                        window.open(target, '_self');
+                    },
+                    // 跳转登录
+                    goToLogin() {
+                        window.open('login.html?from=' + encodeURIComponent(window.location.href), '_self');
+                    },
+                    // 重新加载页面
+                    reload() {
+                        window.open(window.location.href, '_self');
+                    },
+                    setPaginationLabel_5(firstRowIndex, endRowIndex, totalRowsNumber) {
+                        return (
+                            "第" +
+                            firstRowIndex +
+                            " - " +
+                            endRowIndex +
+                            "条记录，共" +
+                            totalRowsNumber +
+                            "（至多搜索5）条记录"
+                        );
+                    },
+                    blog_list_offset: 0,
+                    video_list_offset: 0,
+                    avatar_list_offset: 0,
+                    cover_list_offset: 0,
+                    // 更改offset，不刷新页面
+                    changeOffset(type, offsetChange) {
+                        if (type === 'blog_list') {
+                            // 关注列表
+                            let newOffset = parseInt(this.blog_list_offset) + offsetChange;
+                            if (newOffset < 0) {
+                                newOffset = 0;
+                            }
+                            this.blog_list_offset = newOffset;
+                            this.manage_blog_list(this.sessionStorage_token, this.blog_list_offset);
+                        }
+                        else if (type === 'video_list') {
+                            // 视频列表
+                            let newOffset = parseInt(this.video_list_offset) + offsetChange;
+                            if (newOffset < 0) {
+                                newOffset = 0;
+                            }
+                            this.video_list_offset = newOffset;
+                            this.manage_video_list(this.sessionStorage_token, this.video_list_offset);
+                        }
+                        else if (type === 'avatar_list') {
+                            // 头像列表
+                            let newOffset = parseInt(this.avatar_list_offset) + offsetChange;
+                            if (newOffset < 0) {
+                                newOffset = 0;
+                            }
+                            this.avatar_list_offset = newOffset;
+                            this.audit_avatar_list(this.sessionStorage_token, this.avatar_list_offset);
+                        }
+                        else if (type === 'cover_list') {
+                            // 封面列表
+                            let newOffset = parseInt(this.cover_list_offset) + offsetChange;
+                            if (newOffset < 0) {
+                                newOffset = 0;
+                            }
+                            this.cover_list_offset = newOffset;
+                            this.audit_cover_list(this.sessionStorage_token, this.cover_list_offset);
+                        }
+                    },
+                    // 通过头像
+                    approve_avatar: async (token, uid_of_avatar) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'profile',
+                            action: 'approve_avatar',
+                            token: token,
+                            uid_of_avatar: uid_of_avatar,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_uid': '非法uid',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '通过头像失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '通过头像成功'
+                            });
+                        }
+                    },
+                    // 退回头像
+                    reject_avatar: async (token, uid_of_avatar) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'profile',
+                            action: 'reject_avatar',
+                            token: token,
+                            uid_of_avatar: uid_of_avatar,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_uid': '非法uid',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '退回头像失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '退回头像成功'
+                            });
+                        }
+                    },
+                    uid_of_avatar: null,
+                    // 通过封面
+                    approve_cover: async (token, uid_of_cover) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'profile',
+                            action: 'approve_cover',
+                            token: token,
+                            uid_of_cover: uid_of_cover,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_uid': '非法uid',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '通过封面失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '通过封面成功'
+                            });
+                        }
+                    },
+                    // 退回封面
+                    reject_cover: async (token, uid_of_cover) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'profile',
+                            action: 'reject_cover',
+                            token: token,
+                            uid_of_cover: uid_of_cover,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_uid': '非法uid',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '退回封面失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '退回封面成功'
+                            });
+                        }
+                    },
+                    uid_of_cover: null,
+                    // 管理动态列表
+                    manage_blog_list: async (token, offset) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'profile',
+                            action: 'manage_blog_list',
+                            token: token,
+                            offset: offset,
+                            num: 5
+                        };
+                        const response = await axios.get(url, { params });
+                        this.manage_blog_count = response.data.manage_blog_count;
+                        this.blog_list_rows = response.data.blog_list;
+                    },
+                    // 管理动态列表columns
+                    blog_list_columns: [
+                        { name: 'admin_data', label: '管理员信息', align: 'left' },
+                        { name: 'info', label: '动态信息', field: 'info', align: 'left' },
+                        { name: 'title', label: '标题', field: 'title', align: 'left' },
+                        { name: 'content', label: '内容', field: 'content', align: 'left' },
+                        { name: 'options', label: '操作', align: 'left' },
+                    ],
+                    blog_list_rows: [],
+                    // 管理视频列表
+                    manage_video_list: async (token, offset) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'profile',
+                            action: 'manage_video_list',
+                            token: token,
+                            offset: offset,
+                            num: 5
+                        };
+                        const response = await axios.get(url, { params });
+                        this.manage_video_count = response.data.manage_video_count;
+                        this.video_list_rows = response.data.video_list;
+                    },
+                    // 管理视频列表columns
+                    video_list_columns: [
+                        { name: 'admin_data', label: '管理员信息', align: 'left' },
+                        { name: 'cover_url', label: '封面', field: 'cover_url', align: 'left' },
+                        { name: 'info', label: '视频信息', field: 'info', align: 'left' },
+                        { name: 'options', label: '操作', align: 'left' },
+                    ],
+                    video_list_rows: [],
+                    // 审核头像列表
+                    audit_avatar_list: async (token, offset) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'profile',
+                            action: 'audit_avatar_list',
+                            token: token,
+                            offset: offset,
+                            num: 5
+                        };
+                        const response = await axios.get(url, { params });
+                        this.audit_avatar_count = response.data.audit_avatar_count;
+                        this.avatar_list_rows = response.data.avatar_list;
+                    },
+                    // 审核头像列表columns
+                    avatar_list_columns: [
+                        { name: 'uid', label: 'UID', field: 'uid', align: 'left' },
+                        { name: 'username', label: '用户名', field: 'username', align: 'left' },
+                        { name: 'avatar', label: '头像', field: 'avatar', align: 'left' },
+                        { name: 'options', label: '操作', align: 'left' },
+                    ],
+                    avatar_list_rows: [],
+                    // 审核封面列表
+                    audit_cover_list: async (token, offset) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'profile',
+                            action: 'audit_cover_list',
+                            token: token,
+                            offset: offset,
+                            num: 5
+                        };
+                        const response = await axios.get(url, { params });
+                        this.audit_cover_count = response.data.audit_cover_count;
+                        this.cover_list_rows = response.data.cover_list;
+                    },
+                    // 审核封面列表columns
+                    cover_list_columns: [
+                        { name: 'uid', label: 'UID', field: 'uid', align: 'left' },
+                        { name: 'username', label: '用户名', field: 'username', align: 'left' },
+                        { name: 'cover', label: '封面', field: 'cover', align: 'left' },
+                        { name: 'options', label: '操作', align: 'left' },
+                    ],
+                    cover_list_rows: [],
+                    // 删除动态
+                    delete_blog: async (bid, token) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'manage',
+                            action: 'delete_blog',
+                            bid: bid,
+                            token: token,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_type': '错误数值类型',
+                                'error_bid': '错误BID',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '删除动态失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '删除动态成功'
+                            });
+                        }
+                    },
+                    // 申诉动态
+                    appeal_blog: async (bid, token) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'manage',
+                            action: 'appeal_blog',
+                            bid: bid,
+                            token: token,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_type': '错误数值类型',
+                                'error_bid': '错误BID',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '申诉动态失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '申诉动态成功'
+                            });
+                        }
+                    },
+                    bid: null,
+                    // 删除视频
+                    delete_video: async (vid, token) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'manage',
+                            action: 'delete_video',
+                            vid: vid,
+                            token: token,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_type': '错误数值类型',
+                                'error_vid': '错误VID',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '删除视频失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '删除视频成功'
+                            });
+                        }
+                    },
+                    // 申诉视频
+                    appeal_video: async (vid, token) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'manage',
+                            action: 'appeal_video',
+                            vid: vid,
+                            token: token,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_type': '错误数值类型',
+                                'error_vid': '错误VID',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '申诉视频失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '申诉视频成功'
+                            });
+                        }
+                    },
+                    vid: null,
+                    // 举报动态
+                    report_blog: async (bid, token) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'moderation',
+                            action: 'report_blog',
+                            bid: bid,
+                            token: token,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_type': '错误数值类型',
+                                'error_bid': '错误BID',
+                                'no_permission': '没有权限',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '举报动态失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '举报动态成功'
+                            });
+                        }
+                    },
+                    // 过审动态
+                    approve_blog: async (bid, token) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'moderation',
+                            action: 'approve_blog',
+                            bid: bid,
+                            token: token,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_type': '错误数值类型',
+                                'error_bid': '错误BID',
+                                'no_permission': '没有权限',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '过审动态失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '过审动态成功'
+                            });
+                        }
+                    },
+                    // 打回动态
+                    reject_blog: async (bid, token) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'moderation',
+                            action: 'reject_blog',
+                            bid: bid,
+                            token: token,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_type': '错误数值类型',
+                                'error_bid': '错误BID',
+                                'no_permission': '没有权限',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '打回动态失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '打回动态成功'
+                            });
+                        }
+                    },
+                    // 举报视频
+                    report_video: async (vid, token) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'moderation',
+                            action: 'report_video',
+                            vid: vid,
+                            token: token,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_type': '错误数值类型',
+                                'error_vid': '错误VID',
+                                'no_permission': '没有权限',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '举报视频失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '举报视频成功'
+                            });
+                        }
+                    },
+                    // 过审视频
+                    approve_video: async (vid, token) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'moderation',
+                            action: 'approve_video',
+                            vid: vid,
+                            token: token,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_type': '错误数值类型',
+                                'error_vid': '错误VID',
+                                'no_permission': '没有权限',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '过审视频失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '过审视频成功'
+                            });
+                        }
+                    },
+                    // 打回视频
+                    reject_video: async (vid, token) => {
+                        const url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'moderation',
+                            action: 'reject_video',
+                            vid: vid,
+                            token: token,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_type': '错误数值类型',
+                                'error_vid': '错误VID',
+                                'no_permission': '没有权限',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '打回视频失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '打回视频成功'
+                            });
+                        }
+                    },
+                    // 未读消息数
+                    new_message_num: async (token) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'im',
+                            action: 'new_message_num',
+                            token: token,
+                        };
+                        const response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            return;
+                        }
+                        else {
+                            this.new_message_num_ = response.data.new_message_num;
+                        }
+                    },
+                    new_message_num_: null,
+                };
+            },
+            mounted() {
+                if (!this.sessionStorage_token){
+                    this.goToLogin();
+                }
+                this.manage_blog_list(this.sessionStorage_token, this.blog_list_offset);
+                this.manage_video_list(this.sessionStorage_token, this.video_list_offset);
+                this.audit_avatar_list(this.sessionStorage_token, this.avatar_list_offset);
+                this.audit_cover_list(this.sessionStorage_token, this.cover_list_offset);
+                if (this.sessionStorage_token) {
+                    setInterval(() => {
+                        this.new_message_num(this.sessionStorage_token);
+                    }, 5000);
+                }
+            },
+            computed: {
+                innerWidth() {
+                    return window.innerWidth;
+                }
+            }
+        };
+        const app = Vue.createApp(App);
+
+        app.use(Quasar)
+        app.mount('#q-app')
+    </script>
+</body>
+
+</html>

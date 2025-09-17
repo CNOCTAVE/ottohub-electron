@@ -1,0 +1,126 @@
+/* ottohub-electron is an open source ottohub.cn client packed by electron
+Copyright (C) 2024-2025  Yu Hongbo, CNOCTAVE
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>. */
+
+.avatar_div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    flex-direction: column;
+}
+
+.navbar_div {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.refreshbar_div {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.flexcards-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.flexcards-item {
+    flex: 1 0 100%;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 16px;
+    flex-basis: calc((100% - 64px) / 2);
+    max-width: calc((100% - 64px) / 2);
+}
+
+@media (min-width: 1080px) {
+    .flexcards-item {
+        flex-basis: calc((100% - 128px) / 4);
+        max-width: calc((100% - 128px) / 4);
+        margin: 16px;
+    }
+}
+
+.flexcards-item-img {
+    height: 20vh;
+    width: 32vw;
+}
+
+@media (min-width: 1080px) {
+    .flexcards-item-img {
+        width: 16vw;
+    }
+}
+
+.fenqu-item {
+    flex: 1 0 100%;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 16px;
+    flex-basis: calc((100% - 128px) / 4);
+    max-width: calc((100% - 128px) / 4);
+}
+
+@media (min-width: 1080px) {
+    .fenqu-item {
+        flex-basis: calc((100% - 256px) / 8);
+        max-width: calc((100% - 256px) / 8);
+        margin: 16px;
+    }
+}
+
+#dplayer-outline {
+    width: 100%;
+    margin: 0;
+}
+
+@media (min-width: 1080px) {
+    #dplayer-outline {
+        width: 60%;
+        height: 50%;
+    }
+}
+
+#dplayer_list {
+    width: 100%;
+    margin: 0;
+}
+
+@media (min-width: 1080px) {
+    #dplayer_list {
+        width: 35%;
+    }
+}
+
+.form_text {
+    font-size: 16px;
+    color: grey;
+}
+
+#danmaku_container {
+    position: absolute;
+    width: 100%;
+    height: 98%;
+    left: 0;
+    top: 1%;
+    pointer-events: none;
+}

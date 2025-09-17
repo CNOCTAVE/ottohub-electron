@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+
+<!-- ottohub-electron is an open source ottohub.cn client packed by electron
+Copyright (C) 2024-2025  Yu Hongbo, CNOCTAVE
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
+
+<html>
+
+<head>
+    <title>ottohub-electron</title>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1">
+    <meta name="theme-color" content="#00B4FF">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="msapplication-TileImage" content="/favicon.ico">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="apple-mobile-web-app-title" content="Octave中文网">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="title" content="Octave中文网" data-qmeta="title">
+    <meta property="og:title" content="Octave中文网" data-qmeta="ogTitle">
+    <meta name="twitter:title" content="Octave中文网" data-qmeta="twitterTitle">
+    <meta name="description" content="Octave中文网是一个面向中文Octave开发者的交流平台，拥有中文Octave文档、中文Octave论坛和中文Octave新闻等特色。"
+        data-qmeta="description">
+    <meta property="og:description" content="Octave中文网是一个面向中文Octave开发者的交流平台，拥有中文Octave文档、中文Octave论坛和中文Octave新闻等特色。"
+        data-qmeta="ogDesc">
+    <meta name="twitter:description" content="Octave中文网是一个面向中文Octave开发者的交流平台，拥有中文Octave文档、中文Octave论坛和中文Octave新闻等特色。"
+        data-qmeta="twitterDesc">
+    <link href="MaterialIcons.css" rel="stylesheet" type="text/css">
+    <link href="fontawesome/fontawesome5.css" rel="stylesheet" type="text/css">
+    <link href="fontawesome/fontawesome6.css" rel="stylesheet" type="text/css">
+    <link href="animate.css" rel="stylesheet" type="text/css">
+    <link href="quasar.css" rel="stylesheet" type="text/css">
+    <link href="main.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div id="q-app">
+        <q-layout view="hHh LpR fFf">
+            <div class="q-ma-md navbar_div">
+                <q-input filled v-model="text" label="万能搜索" style="width: 100%; margin-right: 0;"
+                    v-show="innerWidth <= 1080">
+                    <template v-slot:append>
+                        <q-btn color="primary" @click="goToID(`search.html?keyword=${text}`)">
+                            <q-icon left name="search"></q-icon>
+                            <div>搜索</div>
+                        </q-btn>
+                    </template>
+                </q-input>
+                <div class="avatar_div">
+                    <q-avatar color="green" text-color="white" icon="tv"></q-avatar>
+                    <div>视频</div>
+                    <q-popup-proxy>
+                        <q-banner>
+                            <q-list>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=1&category=1')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="window"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>分区视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=2')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="shuffle"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>随机视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=3&offset=0')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="access_time"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>最新视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=4&offset=0&time_limit=7')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="bar_chart"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>本周热门</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=4&offset=0&time_limit=30')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="trending_up"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>本月热门</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=4&offset=0&time_limit=90')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="whatshot"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>本季热门</q-item-section>
+                                </q-item>
+                            </q-list>
+                        </q-banner>
+                    </q-popup-proxy>
+                </div>
+                <div class="avatar_div" @click="goToID('blog_list.html?type=1')">
+                    <q-avatar color="red" text-color="white" icon="create"></q-avatar>
+                    <div>动态</div>
+                </div>
+                <q-input filled v-model="text" label="万能搜索" v-show="innerWidth > 1080">
+                    <template v-slot:append>
+                        <q-btn color="primary" @click="goToID(`search.html?keyword=${text}`)">
+                            <q-icon left name="search"></q-icon>
+                            <div>搜索</div>
+                        </q-btn>
+                    </template>
+                </q-input>
+                <div class="avatar_div">
+                    <q-avatar color="teal" text-color="white" icon="menu">
+                        <q-badge color="red" floating v-show="new_message_num_ > 0">{{new_message_num_}}</q-badge>
+                    </q-avatar>
+                    <div>其他</div>
+                    <q-popup-proxy>
+                        <q-banner>
+                            <q-list>
+                                <q-item clickable v-ripple @click="goToID('im.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="teal" name="sms"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>消息</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('my.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="purple-12" name="man"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>我的</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('admin.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="settings"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>管理页面</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('submit_video.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="green" name="tv"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>发布视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('submit_blog.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="purple-12" name="create"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>发布动态</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('docs/index.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="yellow-10" name="help"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>使用帮助</q-item-section>
+                                </q-item>
+                            </q-list>
+                        </q-banner>
+                    </q-popup-proxy>
+                </div>
+                <div class="avatar_div" @click="goToLogin()">
+                    <q-avatar class="cursor-pointer">
+                        <img :src="sessionStorage_avatar_url">
+                    </q-avatar>
+                </div>
+            </div>
+            <q-separator></q-separator>
+            <q-page-container>
+                <div class="q-ma-md" style="display: flex; 
+                        flex-direction: row;
+                        align-content: center;
+                        align-items: center;
+                        flex-wrap: wrap;
+                        justify-content: flex-start;" v-show="sessionStorage_token">
+                    <div class="q-my-md refreshbar_div" style="flex-direction: row;">
+                        <div class="text-h4">发布动态</div>
+                        <div class="navbar_div">
+                            <q-btn color="green" @click="load_blog(sessionStorage_token, content)">
+                                <q-icon left name="download"></q-icon>
+                                <div>加载动态草稿</div>
+                            </q-btn>
+                            <div>&nbsp;</div>
+                            <q-btn color="purple-10" @click="save_blog(sessionStorage_token, content)">
+                                <q-icon left name="save"></q-icon>
+                                <div>保存动态草稿</div>
+                            </q-btn>
+                        </div>
+                    </div>
+                    <q-input filled v-model="title" label="标题不超过44字" autogrow style="width:100%; margin-bottom: 10px;">
+                    </q-input>
+                    <q-input filled v-model="content" label="内容不超过8888字" autogrow
+                        style="width:100%; margin-bottom: 10px;">
+                    </q-input>
+                    <q-btn color="primary" style="width:100%; margin-bottom: 10px;"
+                        @click="submit_blog(sessionStorage_token, title, content)">
+                        <q-icon left name="send"></q-icon>
+                        <div>发布</div>
+                    </q-btn>
+                </div>
+            </q-page-container>
+        </q-layout>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="vue.js"></script>
+    <script src="quasar.js"></script>
+    <!-- <script>
+        function setInitialScale() {
+            const screenWidth = window.screen.width;
+            const initialScale = screenWidth / 700;
+            const minScale = 0.5;
+            const maxScale = 2.0;
+            const scale = Math.min(maxScale, Math.max(minScale, initialScale));
+            document.querySelector('meta[name="viewport"]').setAttribute(
+                'content', 
+                `width=700, initial-scale=${scale}, minimum-scale=${minScale}, maximum-scale=${maxScale}`
+            );
+        }
+        window.addEventListener('load', setInitialScale);
+        window.addEventListener('resize', setInitialScale);
+    </script> -->
+    <script>
+        const App = {
+            data() {
+                return {
+                    sessionStorage_token: sessionStorage.getItem('token'),
+                    sessionStorage_uid: sessionStorage.getItem('uid'),
+                    sessionStorage_cover_url: sessionStorage.getItem('cover_url'),
+                    sessionStorage_avatar_url: sessionStorage.getItem('avatar_url') ? sessionStorage.getItem('avatar_url') : 'https://api.ottohub.cn/public/img/avatar_default.jpg',
+                    // 跳转方法
+                    goToID(target) {
+                        window.open(target, '_self');
+                    },
+                    // 跳转登录
+                    goToLogin() {
+                        window.open('login.html?from=' + encodeURIComponent(window.location.href), '_self');
+                    },
+                    // 重新加载页面
+                    reload() {
+                        window.open(window.location.href, '_self');
+                    },
+                    setPaginationLabel_5(firstRowIndex, endRowIndex, totalRowsNumber) {
+                        return (
+                            "第" +
+                            firstRowIndex +
+                            " - " +
+                            endRowIndex +
+                            "条记录，共" +
+                            totalRowsNumber +
+                            "（至多搜索5）条记录"
+                        );
+                    },
+                    title: null,
+                    content: null,
+                    // 发布动态
+                    submit_blog: async (token, title, content) => {
+                        const formData = new FormData();
+                        formData.append('action', 'submit_blog');
+                        formData.append('token', token);
+                        formData.append('title', title);
+                        formData.append('content', content);
+                        let response = await axios({
+                            method: 'post',
+                            url: 'https://api.ottohub.cn/module/creator/submit_blog.php',
+                            data: formData,
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'title_too_long': '标题过长',
+                                'content_too_long': '内容过长',
+                                'title_too_short': '标题过短',
+                                'content_too_short': '内容过短',
+                                'warn': '触发敏感词',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '发布动态失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '发布动态成功'
+                            });
+                        }
+                    },
+                    // 保存动态草稿
+                    save_blog: async (token, content) => {
+                        const formData = new FormData();
+                        formData.append('action', 'save_blog');
+                        formData.append('token', token);
+                        formData.append('content', content);
+                        let response = await axios({
+                            method: 'post',
+                            url: 'https://api.ottohub.cn/module/creator/save_blog.php',
+                            data: formData,
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'content_too_long': '内容过长',
+                                'warn': '触发敏感词',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '保存动态草稿失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '保存动态草稿成功'
+                            });
+                        }
+                    },
+                    // 加载动态草稿
+                    load_blog: async (token, content) => {
+                        const formData = new FormData();
+                        formData.append('action', 'load_blog');
+                        formData.append('token', token);
+                        formData.append('content', content);
+                        let response = await axios({
+                            method: 'post',
+                            url: 'https://api.ottohub.cn/module/creator/load_blog.php',
+                            data: formData,
+                            headers: {
+                                'Content-Type': 'multipart/form-data'
+                            }
+                        });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '加载动态草稿失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '加载动态草稿成功'
+                            });
+                        }
+                        this.content = response.data.content;
+                    },
+                    // 未读消息数
+                    new_message_num: async (token) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'im',
+                            action: 'new_message_num',
+                            token: token,
+                        };
+                        const response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            return;
+                        }
+                        else {
+                            this.new_message_num_ = response.data.new_message_num;
+                        }
+                    },
+                    new_message_num_: null,
+                };
+            },
+            mounted() {
+                if (!this.sessionStorage_token){
+                    this.goToLogin();
+                }
+                if (this.sessionStorage_token) {
+                    setInterval(() => {
+                        this.new_message_num(this.sessionStorage_token);
+                    }, 5000);
+                }
+            },
+            computed: {
+                innerWidth() {
+                    return window.innerWidth;
+                }
+            }
+        };
+        const app = Vue.createApp(App);
+
+        app.use(Quasar)
+        app.mount('#q-app')
+    </script>
+</body>
+
+</html>

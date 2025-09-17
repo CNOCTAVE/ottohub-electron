@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+
+<!-- ottohub-electron is an open source ottohub.cn client packed by electron
+Copyright (C) 2024-2025  Yu Hongbo, CNOCTAVE
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as
+published by the Free Software Foundation, either version 3 of the
+License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
+
+<html>
+
+<head>
+    <title>ottohub-electron</title>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,maximum-scale=1,minimum-scale=1">
+    <meta name="theme-color" content="#00B4FF">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="msapplication-TileImage" content="/favicon.ico">
+    <meta name="msapplication-TileColor" content="#000000">
+    <meta name="apple-mobile-web-app-title" content="Octave中文网">
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+    <meta name="title" content="Octave中文网" data-qmeta="title">
+    <meta property="og:title" content="Octave中文网" data-qmeta="ogTitle">
+    <meta name="twitter:title" content="Octave中文网" data-qmeta="twitterTitle">
+    <meta name="description" content="Octave中文网是一个面向中文Octave开发者的交流平台，拥有中文Octave文档、中文Octave论坛和中文Octave新闻等特色。"
+        data-qmeta="description">
+    <meta property="og:description" content="Octave中文网是一个面向中文Octave开发者的交流平台，拥有中文Octave文档、中文Octave论坛和中文Octave新闻等特色。"
+        data-qmeta="ogDesc">
+    <meta name="twitter:description" content="Octave中文网是一个面向中文Octave开发者的交流平台，拥有中文Octave文档、中文Octave论坛和中文Octave新闻等特色。"
+        data-qmeta="twitterDesc">
+    <link href="MaterialIcons.css" rel="stylesheet" type="text/css">
+    <link href="fontawesome/fontawesome5.css" rel="stylesheet" type="text/css">
+    <link href="fontawesome/fontawesome6.css" rel="stylesheet" type="text/css">
+    <link href="animate.css" rel="stylesheet" type="text/css">
+    <link href="quasar.css" rel="stylesheet" type="text/css">
+    <link href="main.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <div id="q-app">
+        <q-layout view="hHh LpR fFf">
+            <div class="q-ma-md navbar_div">
+                <q-input filled v-model="text" label="万能搜索" style="width: 100%; margin-right: 0;"
+                    v-show="innerWidth <= 1080">
+                    <template v-slot:append>
+                        <q-btn color="primary" @click="goToID(`search.html?keyword=${text}`)">
+                            <q-icon left name="search"></q-icon>
+                            <div>搜索</div>
+                        </q-btn>
+                    </template>
+                </q-input>
+                <div class="avatar_div">
+                    <q-avatar color="green" text-color="white" icon="tv"></q-avatar>
+                    <div>视频</div>
+                    <q-popup-proxy>
+                        <q-banner>
+                            <q-list>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=1&category=1')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="window"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>分区视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=2')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="shuffle"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>随机视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=3&offset=0')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="access_time"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>最新视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=4&offset=0&time_limit=7')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="bar_chart"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>本周热门</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=4&offset=0&time_limit=30')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="trending_up"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>本月热门</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('index.html?type=4&offset=0&time_limit=90')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="whatshot"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>本季热门</q-item-section>
+                                </q-item>
+                            </q-list>
+                        </q-banner>
+                    </q-popup-proxy>
+                </div>
+                <div class="avatar_div" @click="goToID('blog_list.html?type=1')">
+                    <q-avatar color="red" text-color="white" icon="create"></q-avatar>
+                    <div>动态</div>
+                </div>
+                <q-input filled v-model="text" label="万能搜索" v-show="innerWidth > 1080">
+                    <template v-slot:append>
+                        <q-btn color="primary" @click="goToID(`search.html?keyword=${text}`)">
+                            <q-icon left name="search"></q-icon>
+                            <div>搜索</div>
+                        </q-btn>
+                    </template>
+                </q-input>
+                <div class="avatar_div">
+                    <q-avatar color="teal" text-color="white" icon="menu">
+                        <q-badge color="red" floating v-show="new_message_num_ > 0">{{new_message_num_}}</q-badge>
+                    </q-avatar>
+                    <div>其他</div>
+                    <q-popup-proxy>
+                        <q-banner>
+                            <q-list>
+                                <q-item clickable v-ripple @click="goToID('im.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="teal" name="sms"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>消息</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('my.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="purple-12" name="man"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>我的</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('admin.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="primary" name="settings"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>管理页面</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('submit_video.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="green" name="tv"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>发布视频</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('submit_blog.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="purple-12" name="create"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>发布动态</q-item-section>
+                                </q-item>
+                                <q-separator></q-separator>
+                                <q-item clickable v-ripple @click="goToID('docs/index.html')">
+                                    <q-item-section avatar>
+                                        <q-icon color="yellow-10" name="help"></q-icon>
+                                    </q-item-section>
+                                    <q-item-section>使用帮助</q-item-section>
+                                </q-item>
+                            </q-list>
+                        </q-banner>
+                    </q-popup-proxy>
+                </div>
+                <div class="avatar_div" @click="goToLogin()">
+                    <q-avatar class="cursor-pointer">
+                        <img :src="sessionStorage_avatar_url">
+                    </q-avatar>
+                </div>
+            </div>
+            <q-separator></q-separator>
+            <q-page-container>
+                <div>
+                    <div class="q-ma-md refreshbar_div">
+                        <div class="text-h4">搜索结果</div>
+                    </div>
+                    <q-separator></q-separator>
+                    <div class="q-ma-md refreshbar_div">
+                        <q-table :title="'用户名中含有 ' + keyword + ' 的用户：'" :rows="search_user_list_rows"
+                            :columns="search_user_list_columns" row-key="uid" no-data-label="无数据"
+                            :pagination-label="setPaginationLabel_20" rows-per-page-label="每页条数：" style="width:100%;">
+                            <template v-slot:body-cell-avatar_url="props">
+                                <q-td :props="props">
+                                    <q-avatar class="cursor-pointer"
+                                        @click="goToID(`search.html?keyword=${props.row.uid}`)">
+                                        <img :src="props.row.avatar_url">
+                                    </q-avatar>
+                                </q-td>
+                            </template>
+                            <template v-slot:body-cell-options="props">
+                                <q-td :props="props">
+                                    <q-btn color="purple-12" icon="list" label="用户拥有的视频合集"
+                                        @click="get_user_video_collection(props.row.uid)"></q-btn>
+                                    <div>&nbsp;</div>
+                                    <q-btn color="primary" icon="home" label="个人主页"
+                                        @click="goToID('personal_page.html?uid=' + props.row.uid)">
+                                    </q-btn>
+                                </q-td>
+                            </template>
+                        </q-table>
+                    </div>
+                    <q-separator></q-separator>
+                    <div class="q-ma-md text-h6">UID为 {{keyword}} 的用户：</div>
+                    <q-separator></q-separator>
+                    <q-list>
+                        <q-item clickable v-ripple>
+                            <q-item-section>
+                                <q-avatar class="cursor-pointer" @click="goToID(`search.html?keyword=${user.uid}`)">
+                                    <img :src="user.avatar_url">
+                                </q-avatar>
+                            </q-item-section>
+                            <q-item-section>
+                                <q-item-label style="line-break: anywhere;">
+                                    UID：
+                                </q-item-label>
+                                <q-item-label style="line-break: anywhere;">
+                                    {{user.uid}}
+                                </q-item-label>
+                            </q-item-section>
+                            <q-item-section>
+                                <q-item-label style="line-break: anywhere;">
+                                    用户名：
+                                </q-item-label>
+                                <q-item-label style="line-break: anywhere;">
+                                    {{user.username}}
+                                </q-item-label>
+                            </q-item-section>
+                            <q-item-section>
+                                <q-item-label style="line-break: anywhere;">
+                                    简介：
+                                </q-item-label>
+                                <q-item-label style="line-break: anywhere;">
+                                    {{user.intro}}
+                                </q-item-label>
+                            </q-item-section>
+                            <q-item-section>
+                                <q-item-label style="line-break: anywhere;">
+                                    操作：
+                                </q-item-label>
+                                <q-item-label style="line-break: anywhere;">
+                                    <q-btn color="purple-12" icon="list" label="用户拥有的视频合集"
+                                        @click="get_user_video_collection(user.uid)"></q-btn>
+                                    <div>&nbsp;</div>
+                                    <q-btn color="primary" icon="home" label="个人主页"
+                                        @click="goToID('personal_page.html?uid=' + user.uid)">
+                                    </q-btn>
+                                </q-item-label>
+                            </q-item-section>
+                        </q-item>
+                    </q-list>
+                    <q-separator></q-separator>
+                    <div class="q-ma-md refreshbar_div">
+                        <q-table :title="'UID为 ' + keyword + ' 的用户的关注列表：'" :rows="following_list_rows"
+                            :columns="following_list_columns" row-key="uid" no-data-label="无数据"
+                            :pagination-label="setPaginationLabel_5" rows-per-page-label="每页条数：" style="width:100%;">
+                            <template v-slot:top-right>
+                                <q-btn color="primary" icon="west" label="上一页"
+                                    @click="changeOffset('following_list', -5)"></q-btn>
+                                <div>&nbsp;</div>
+                                <q-btn color="primary" icon-right="east" label="下一页"
+                                    @click="changeOffset('following_list', 5)"></q-btn>
+                            </template>
+                            <template v-slot:body-cell-avatar_url="props">
+                                <q-td :props="props">
+                                    <q-avatar class="cursor-pointer"
+                                        @click="goToID(`search.html?keyword=${props.row.uid}`)">
+                                        <img :src="props.row.avatar_url">
+                                    </q-avatar>
+                                </q-td>
+                            </template>
+                            <template v-slot:body-cell-options="props">
+                                <q-td :props="props">
+                                    <q-btn color="purple-12" icon="list" label="用户拥有的视频合集"
+                                        @click="get_user_video_collection(props.row.uid)"></q-btn>
+                                    <div>&nbsp;</div>
+                                    <q-btn color="primary" icon="home" label="个人主页"
+                                        @click="goToID('personal_page.html?uid=' + props.row.uid)">
+                                    </q-btn>
+                                </q-td>
+                            </template>
+                        </q-table>
+                    </div>
+                    <q-separator></q-separator>
+                    <div class="q-ma-md refreshbar_div">
+                        <q-table :title="'UID为 ' + keyword + ' 的用户的粉丝列表：'" :rows="fan_list_rows"
+                            :columns="fan_list_columns" row-key="uid" no-data-label="无数据"
+                            :pagination-label="setPaginationLabel_5" rows-per-page-label="每页条数：" style="width:100%;">
+                            <template v-slot:top-right>
+                                <q-btn color="primary" icon="west" label="上一页"
+                                    @click="changeOffset('fan_list', -5)"></q-btn>
+                                <div>&nbsp;</div>
+                                <q-btn color="primary" icon-right="east" label="下一页"
+                                    @click="changeOffset('fan_list', 5)"></q-btn>
+                            </template>
+                            <template v-slot:body-cell-avatar_url="props">
+                                <q-td :props="props">
+                                    <q-avatar class="cursor-pointer"
+                                        @click="goToID(`search.html?keyword=${props.row.uid}`)">
+                                        <img :src="props.row.avatar_url">
+                                    </q-avatar>
+                                </q-td>
+                            </template>
+                            <template v-slot:body-cell-options="props">
+                                <q-td :props="props">
+                                    <q-btn color="purple-12" icon="list" label="用户拥有的视频合集"
+                                        @click="get_user_video_collection(props.row.uid)"></q-btn>
+                                    <div>&nbsp;</div>
+                                    <q-btn color="primary" icon="home" label="个人主页"
+                                        @click="goToID('personal_page.html?uid=' + props.row.uid)">
+                                    </q-btn>
+                                </q-td>
+                            </template>
+                        </q-table>
+                    </div>
+                    <q-separator></q-separator>
+                    <div class="q-ma-md refreshbar_div">
+                        <q-table :title="'与 ' + keyword + ' 相关的视频：'" :rows="search_video_list_rows"
+                            :columns="search_video_list_columns" row-key="vid" no-data-label="无数据"
+                            :pagination-label="setPaginationLabel_20" rows-per-page-label="每页条数：" style="width:100%;">
+                            <template v-slot:body-cell-cover_url="props">
+                                <q-td :props="props">
+                                    <q-img :src="props.row.cover_url" spinner-color="white"
+                                        style="height: 20vh; width: 16vw; min-width: 320px; min-height: 240px;">
+                                    </q-img>
+                                </q-td>
+                            </template>
+                            <template v-slot:body-cell-options="props">
+                                <q-td :props="props">
+                                    <q-btn color="primary" icon="search" label="查看"
+                                        @click="goToID(`video_player.html?vid=${props.row.vid}`)"></q-btn>
+                                    <q-input filled v-model="collection" label="视频所属合集"
+                                        style="width:100%; margin-bottom: 10px; min-width: 300px;">
+                                        <template v-slot:append>
+                                            <q-btn color="green"
+                                                @click="set_video_collection(props.row.vid, sessionStorage_token, collection)">
+                                                <q-icon left name="edit"></q-icon>
+                                                <div>设置</div>
+                                            </q-btn>
+                                        </template>
+                                    </q-input>
+                                    <q-btn color="purple-12" icon="list" label="获取视频所属合集列表"
+                                        @click="get_video_collection(props.row.vid); get_video_collection_dialog=true;"></q-btn>
+                                </q-td>
+                            </template>
+                            <template v-slot:body-cell-info="props">
+                                <q-td :props="props">
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <div><b>OV{{props.row.vid}}</b></div>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <q-avatar class="cursor-pointer"
+                                            @click="goToID(`search.html?keyword=${props.row.uid}`)">
+                                            <img :src="props.row.avatar_url">
+                                        </q-avatar>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <div><b>UID{{props.row.uid}}</b></div>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <div>用户名：</div>
+                                        <div><b>{{props.row.username}}</b></div>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <div>标题：</div>
+                                        <div><b>{{props.row.title}}</b></div>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <div>时间：</div>
+                                        <div><b>{{props.row.time}}</b></div>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <q-badge color="teal"><b>{{props.row.like_count}}</b></q-badge>
+                                        <q-badge color="blue">点赞</q-badge>
+                                        <q-badge color="teal"><b>{{props.row.favorite_count}}</b></q-badge>
+                                        <q-badge color="orange">收藏</q-badge>
+                                        <q-badge color="teal"><b>{{props.row.view_count}}</b></q-badge>
+                                        <q-badge color="purple-5">查看</q-badge>
+                                    </div>
+                                </q-td>
+                            </template>
+                        </q-table>
+                    </div>
+                    <q-separator></q-separator>
+                    <div class="q-ma-md refreshbar_div">
+                        <q-table :title="'与 ' + keyword + ' 相关的动态：'" :rows="search_blog_list_rows"
+                            :columns="search_blog_list_columns" row-key="bid" no-data-label="无数据"
+                            :pagination-label="setPaginationLabel_20" rows-per-page-label="每页条数：" style="width:100%;">
+                            <template v-slot:body-cell-cover_url="props">
+                                <q-td :props="props">
+                                    <q-img :src="props.row.cover_url" spinner-color="white"
+                                        style="height: 20vh; width: 16vw; min-width: 320px; min-height: 240px;">
+                                    </q-img>
+                                </q-td>
+                            </template>
+                            <template v-slot:body-cell-title="props">
+                                <q-td :props="props">
+                                    <div>{{props.row.title}}</div>
+                                </q-td>
+                            </template>
+                            <template v-slot:body-cell-content="props">
+                                <q-td :props="props">
+                                    <div>{{props.row.content}}</div>
+                                </q-td>
+                            </template>
+                            <template v-slot:body-cell-options="props">
+                                <q-td :props="props">
+                                    <q-btn color="primary" icon="search" label="查看"
+                                        @click="goToID(`blog.html?bid=${props.row.bid}`)"></q-btn>
+                                </q-td>
+                            </template>
+                            <template v-slot:body-cell-info="props">
+                                <q-td :props="props">
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <div><b>OB{{props.row.bid}}</b></div>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <q-avatar class="cursor-pointer"
+                                            @click="goToID(`search.html?keyword=${props.row.uid}`)">
+                                            <img :src="props.row.avatar_url">
+                                        </q-avatar>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <div><b>UID{{props.row.uid}}</b></div>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <div>时间：</div>
+                                        <div><b>{{props.row.time}}</b></div>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <q-badge color="teal"><b>{{props.row.like_count}}</b></q-badge>
+                                        <q-badge color="blue">点赞</q-badge>
+                                        <q-badge color="teal"><b>{{props.row.favorite_count}}</b></q-badge>
+                                        <q-badge color="orange">收藏</q-badge>
+                                        <q-badge color="teal"><b>{{props.row.view_count}}</b></q-badge>
+                                        <q-badge color="purple-5">查看</q-badge>
+                                    </div>
+                                </q-td>
+                            </template>
+                        </q-table>
+                    </div>
+                    <q-separator></q-separator>
+                    <div class="q-ma-md refreshbar_div">
+                        <q-table :title="'UID为 ' + keyword + ' 的用户发的视频：'" :rows="user_video_list_rows"
+                            :columns="user_video_list_columns" row-key="vid" no-data-label="无数据"
+                            :pagination-label="setPaginationLabel_5" rows-per-page-label="每页条数：" style="width:100%;">
+                            <template v-slot:top-right>
+                                <q-btn color="primary" icon="west" label="上一页"
+                                    @click="changeOffset('user_video_list', -5)"></q-btn>
+                                <div>&nbsp;</div>
+                                <q-btn color="primary" icon-right="east" label="下一页"
+                                    @click="changeOffset('user_video_list', 5)"></q-btn>
+                            </template>
+                            <template v-slot:body-cell-options="props">
+                                <q-td :props="props">
+                                    <q-btn color="primary" icon="search" label="查看"
+                                        @click="goToID(`video_player.html?vid=${props.row.vid}`)"></q-btn>
+                                    <q-input filled v-model="collection" label="视频所属合集"
+                                        style="width:100%; margin-bottom: 10px; min-width: 300px;">
+                                        <template v-slot:append>
+                                            <q-btn color="green"
+                                                @click="set_video_collection(props.row.vid, sessionStorage_token, collection)">
+                                                <q-icon left name="edit"></q-icon>
+                                                <div>设置</div>
+                                            </q-btn>
+                                        </template>
+                                    </q-input>
+                                    <q-btn color="purple-12" icon="list" label="获取视频所属合集列表"
+                                        @click="get_video_collection(props.row.vid); get_video_collection_dialog=true;"></q-btn>
+                                </q-td>
+                            </template>
+                            <template v-slot:body-cell-cover_url="props">
+                                <q-td :props="props">
+                                    <q-img :src="props.row.cover_url" spinner-color="white"
+                                        style="height: 20vh; width: 16vw; min-width: 320px; min-height: 240px;">
+                                    </q-img>
+                                </q-td>
+                            </template>
+                            <template v-slot:body-cell-info="props">
+                                <q-td :props="props">
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <div><b>OV{{props.row.vid}}</b></div>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <q-avatar class="cursor-pointer"
+                                            @click="goToID(`search.html?keyword=${props.row.uid}`)">
+                                            <img :src="props.row.avatar_url">
+                                        </q-avatar>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <div><b>UID{{props.row.uid}}</b></div>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <div>用户名：</div>
+                                        <div><b>{{props.row.username}}</b></div>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <div>标题：</div>
+                                        <div><b>{{props.row.title}}</b></div>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <div>时间：</div>
+                                        <div><b>{{props.row.time}}</b></div>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <q-badge color="teal"><b>{{props.row.like_count}}</b></q-badge>
+                                        <q-badge color="blue">点赞</q-badge>
+                                        <q-badge color="teal"><b>{{props.row.favorite_count}}</b></q-badge>
+                                        <q-badge color="orange">收藏</q-badge>
+                                        <q-badge color="teal"><b>{{props.row.view_count}}</b></q-badge>
+                                        <q-badge color="purple-5">查看</q-badge>
+                                    </div>
+                                </q-td>
+                            </template>
+                        </q-table>
+                    </div>
+                    <q-separator></q-separator>
+                    <div class="q-ma-md refreshbar_div">
+                        <q-table :title="'UID为 ' + keyword + ' 的用户发的动态：'" :rows="user_blog_list_rows"
+                            :columns="user_blog_list_columns" row-key="bid" no-data-label="无数据"
+                            :pagination-label="setPaginationLabel_5" rows-per-page-label="每页条数：" style="width:100%;">
+                            <template v-slot:top-right>
+                                <q-btn color="primary" icon="west" label="上一页"
+                                    @click="changeOffset('user_blog_list', -5)"></q-btn>
+                                <div>&nbsp;</div>
+                                <q-btn color="primary" icon-right="east" label="下一页"
+                                    @click="changeOffset('user_blog_list', 5)"></q-btn>
+                            </template>
+                            <template v-slot:body-cell-options="props">
+                                <q-td :props="props">
+                                    <q-btn color="primary" icon="search" label="查看"
+                                        @click="goToID(`blog.html?bid=${props.row.bid}`)"></q-btn>
+                                </q-td>
+                            </template>
+                            <template v-slot:body-cell-info="props">
+                                <q-td :props="props">
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <div><b>OB{{props.row.bid}}</b></div>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <q-avatar class="cursor-pointer"
+                                            @click="goToID(`search.html?keyword=${props.row.uid}`)">
+                                            <img :src="props.row.avatar_url">
+                                        </q-avatar>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <div><b>UID{{props.row.uid}}</b></div>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <div>时间：</div>
+                                        <div><b>{{props.row.time}}</b></div>
+                                    </div>
+                                    <div class="q-mx-md"
+                                        style="display: flex; flex-direction: row; align-content: center;">
+                                        <q-badge color="teal"><b>{{props.row.like_count}}</b></q-badge>
+                                        <q-badge color="blue">点赞</q-badge>
+                                        <q-badge color="teal"><b>{{props.row.favorite_count}}</b></q-badge>
+                                        <q-badge color="orange">收藏</q-badge>
+                                        <q-badge color="teal"><b>{{props.row.view_count}}</b></q-badge>
+                                        <q-badge color="purple-5">查看</q-badge>
+                                    </div>
+                                </q-td>
+                            </template>
+                        </q-table>
+                    </div>
+                </div>
+            </q-page-container>
+        </q-layout>
+        <!-- 获取视频所属合集列表弹窗 -->
+        <q-dialog v-model="get_video_collection_dialog" full-width>
+            <q-card>
+                <q-card-section class="row items-center q-pb-none">
+                    <div class="text-h6">获取视频所属合集列表</div>
+                    <q-space></q-space>
+                    <q-btn icon="close" flat round dense v-close-popup></q-btn>
+                </q-card-section>
+
+                <q-card-section class="q-pt-none">
+                    <q-table title="视频列表："
+                        :rows="get_video_collection_rows" :columns="get_video_collection_columns" row-key="vid"
+                        no-data-label="无数据" :pagination-label="setPaginationLabel" rows-per-page-label="每页条数："
+                        style="width:100%;">
+                        <template v-slot:body-cell-options="props">
+                            <q-td :props="props">
+                                <q-btn color="primary" icon="search" label="查看"
+                                    @click="goToID(`video_player.html?vid=${props.row.vid}`)"></q-btn>
+                                <q-input filled v-model="collection" label="视频所属合集"
+                                    style="width:100%; margin-bottom: 10px; min-width: 300px;">
+                                    <template v-slot:append>
+                                        <q-btn color="green"
+                                            @click="set_video_collection(props.row.vid, sessionStorage_token, collection)">
+                                            <q-icon left name="edit"></q-icon>
+                                            <div>设置</div>
+                                        </q-btn>
+                                    </template>
+                                </q-input>
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-cover_url="props">
+                            <q-td :props="props">
+                                <q-img :src="props.row.cover_url" spinner-color="white"
+                                    style="height: 20vh; width: 16vw; min-width: 320px; min-height: 240px;">
+                                </q-img>
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-info="props">
+                            <q-td :props="props">
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <div><b>OV{{props.row.vid}}</b></div>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <q-avatar class="cursor-pointer"
+                                        @click="goToID(`search.html?keyword=${props.row.uid}`)">
+                                        <img :src="props.row.avatar_url">
+                                    </q-avatar>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <div><b>UID{{props.row.uid}}</b></div>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <div>用户名：</div>
+                                    <div><b>{{props.row.username}}</b></div>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <div>标题：</div>
+                                    <div><b>{{props.row.title}}</b></div>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <div>时间：</div>
+                                    <div><b>{{props.row.time}}</b></div>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <q-badge color="teal"><b>{{props.row.like_count}}</b></q-badge>
+                                    <q-badge color="blue">点赞</q-badge>
+                                    <q-badge color="teal"><b>{{props.row.favorite_count}}</b></q-badge>
+                                    <q-badge color="orange">收藏</q-badge>
+                                    <q-badge color="teal"><b>{{props.row.view_count}}</b></q-badge>
+                                    <q-badge color="purple-5">查看</q-badge>
+                                </div>
+                            </q-td>
+                        </template>
+                    </q-table>
+                </q-card-section>
+            </q-card>
+        </q-dialog>
+        <!-- 用户拥有的视频合集弹窗 -->
+        <q-dialog v-model="get_user_video_collection_dialog" full-width>
+            <q-card>
+                <q-card-section class="row items-center q-pb-none">
+                    <div class="text-h6">用户拥有的视频合集</div>
+                    <q-space></q-space>
+                    <q-btn icon="close" flat round dense v-close-popup></q-btn>
+                </q-card-section>
+                <q-card-section class="row items-center q-pb-none" v-for="(v, k) in video_collection_list_" :key="k">
+                    <div class="text-h6">视频合集：{{v.name}}</div>
+                    <q-table title="视频列表：" :rows="v.video_list" :columns="get_video_collection_columns" row-key="vid"
+                        no-data-label="无数据" :pagination-label="setPaginationLabel" rows-per-page-label="每页条数："
+                        style="width:100%;">
+                        <template v-slot:body-cell-options="props">
+                            <q-td :props="props">
+                                <q-btn color="primary" icon="search" label="查看"
+                                    @click="goToID(`video_player.html?vid=${props.row.vid}`)"></q-btn>
+                                <q-input filled v-model="collection" label="视频所属合集"
+                                    style="width:100%; margin-bottom: 10px; min-width: 300px;">
+                                    <template v-slot:append>
+                                        <q-btn color="green"
+                                            @click="set_video_collection(props.row.vid, sessionStorage_token, collection)">
+                                            <q-icon left name="edit"></q-icon>
+                                            <div>设置</div>
+                                        </q-btn>
+                                    </template>
+                                </q-input>
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-cover_url="props">
+                            <q-td :props="props">
+                                <q-img :src="props.row.cover_url" spinner-color="white"
+                                    style="height: 20vh; width: 16vw; min-width: 320px; min-height: 240px;">
+                                </q-img>
+                            </q-td>
+                        </template>
+                        <template v-slot:body-cell-info="props">
+                            <q-td :props="props">
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <div><b>OV{{props.row.vid}}</b></div>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <q-avatar class="cursor-pointer"
+                                        @click="goToID(`search.html?keyword=${props.row.uid}`)">
+                                        <img :src="props.row.avatar_url">
+                                    </q-avatar>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <div><b>UID{{props.row.uid}}</b></div>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <div>用户名：</div>
+                                    <div><b>{{props.row.username}}</b></div>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <div>标题：</div>
+                                    <div><b>{{props.row.title}}</b></div>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <div>时间：</div>
+                                    <div><b>{{props.row.time}}</b></div>
+                                </div>
+                                <div class="q-mx-md" style="display: flex; flex-direction: row; align-content: center;">
+                                    <q-badge color="teal"><b>{{props.row.like_count}}</b></q-badge>
+                                    <q-badge color="blue">点赞</q-badge>
+                                    <q-badge color="teal"><b>{{props.row.favorite_count}}</b></q-badge>
+                                    <q-badge color="orange">收藏</q-badge>
+                                    <q-badge color="teal"><b>{{props.row.view_count}}</b></q-badge>
+                                    <q-badge color="purple-5">查看</q-badge>
+                                </div>
+                            </q-td>
+                        </template>
+                    </q-table>
+                </q-card-section>
+            </q-card>
+        </q-dialog>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="vue.js"></script>
+    <script src="quasar.js"></script>
+    <!-- <script>
+        function setInitialScale() {
+            const screenWidth = window.screen.width;
+            const initialScale = screenWidth / 700;
+            const minScale = 0.5;
+            const maxScale = 2.0;
+            const scale = Math.min(maxScale, Math.max(minScale, initialScale));
+            document.querySelector('meta[name="viewport"]').setAttribute(
+                'content', 
+                `width=700, initial-scale=${scale}, minimum-scale=${minScale}, maximum-scale=${maxScale}`
+            );
+        }
+        window.addEventListener('load', setInitialScale);
+        window.addEventListener('resize', setInitialScale);
+    </script> -->
+    <script>
+        const App = {
+            data() {
+                return {
+                    sessionStorage_token: sessionStorage.getItem('token'),
+                    sessionStorage_uid: sessionStorage.getItem('uid'),
+                    sessionStorage_cover_url: sessionStorage.getItem('cover_url'),
+                    sessionStorage_avatar_url: sessionStorage.getItem('avatar_url') ? sessionStorage.getItem('avatar_url') : 'https://api.ottohub.cn/public/img/avatar_default.jpg',
+                    // 跳转登录
+                    goToLogin() {
+                        window.open('login.html?from=' + encodeURIComponent(window.location.href), '_self');
+                    },
+                    setPaginationLabel_20(firstRowIndex, endRowIndex, totalRowsNumber) {
+                        return (
+                            "第" +
+                            firstRowIndex +
+                            " - " +
+                            endRowIndex +
+                            "条记录，共" +
+                            totalRowsNumber +
+                            "（至多搜索20）条记录"
+                        );
+                    },
+                    setPaginationLabel_5(firstRowIndex, endRowIndex, totalRowsNumber) {
+                        return (
+                            "第" +
+                            firstRowIndex +
+                            " - " +
+                            endRowIndex +
+                            "条记录，共" +
+                            totalRowsNumber +
+                            "（至多搜索5）条记录"
+                        );
+                    },
+                    setPaginationLabel(firstRowIndex, endRowIndex, totalRowsNumber) {
+                        return (
+                            "第" +
+                            firstRowIndex +
+                            " - " +
+                            endRowIndex +
+                            "条记录，共" +
+                            totalRowsNumber +
+                            "条记录"
+                        );
+                    },
+                    // 跳转方法
+                    goToID(target) {
+                        window.open(target, '_self');
+                    },
+                    // 重新加载页面
+                    reload() {
+                        window.open(window.location.href, '_self');
+                    },
+                    // 搜索用户列表
+                    search_user_list: async (search_term) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'user',
+                            action: 'search_user_list',
+                            search_term: search_term,
+                            num: 20
+                        };
+                        const response = await axios.get(url, { params });
+                        this.search_user_list_rows = response.data.user_list;
+                    },
+                    // 搜索用户列表搜索事件
+                    _search_user_list: (keyword) => {
+                        this.search_user_list(keyword);
+                    },
+                    // 搜索用户列表columns
+                    search_user_list_columns: [
+                        { name: 'uid', label: 'UID', field: 'uid', align: 'left' },
+                        { name: 'avatar_url', label: '头像', field: 'avatar_url', align: 'left' },
+                        { name: 'username', label: '用户名', field: 'username', align: 'left' },
+                        { name: 'intro', label: '简介', field: 'intro', align: 'left' },
+                        { name: 'options', label: '操作', align: 'left' },
+                    ],
+                    search_user_list_rows: [],
+                    // 指定用户列表
+                    id_user_list: async (uid) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'user',
+                            action: 'id_user_list',
+                            uid: uid
+                        };
+                        const response = await axios.get(url, { params });
+                        this.user = response.data.user_list ? response.data.user_list[0] : { uid: '无此用户', username: '无此用户', intro: '无此用户', avatar_url: 'https://api.ottohub.cn/public/img/avatar_default.jpg' };
+                    },
+                    // 指定用户列表搜索事件
+                    _id_user_list: (keyword) => {
+                        this.id_user_list(keyword);
+                    },
+                    // 关注列表
+                    following_list: async (uid, offset) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'following',
+                            action: 'following_list',
+                            uid: uid,
+                            offset: offset,
+                            num: 5
+                        };
+                        const response = await axios.get(url, { params });
+                        this.following_list_rows = response.data.user_list;
+                    },
+                    // 关注列表搜索事件
+                    _following_list: (keyword) => {
+                        this.following_list(keyword, this.following_list_offset);
+                    },
+                    // 关注列表columns
+                    following_list_columns: [
+                        { name: 'uid', label: 'UID', field: 'uid', align: 'left' },
+                        { name: 'avatar_url', label: '头像', field: 'avatar_url', align: 'left' },
+                        { name: 'username', label: '用户名', field: 'username', align: 'left' },
+                        { name: 'intro', label: '简介', field: 'intro', align: 'left' },
+                        { name: 'options', label: '操作', align: 'left' },
+                    ],
+                    following_list_rows: [],
+                    // 粉丝列表
+                    fan_list: async (uid, offset) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'following',
+                            action: 'fan_list',
+                            uid: uid,
+                            offset: offset,
+                            num: 5
+                        };
+                        const response = await axios.get(url, { params });
+                        this.fan_list_rows = response.data.user_list;
+                    },
+                    // 粉丝列表搜索事件
+                    _fan_list: (keyword) => {
+                        this.fan_list(keyword, this.fan_list_offset);
+                    },
+                    // 粉丝列表columns
+                    fan_list_columns: [
+                        { name: 'uid', label: 'UID', field: 'uid', align: 'left' },
+                        { name: 'avatar_url', label: '头像', field: 'avatar_url', align: 'left' },
+                        { name: 'username', label: '用户名', field: 'username', align: 'left' },
+                        { name: 'intro', label: '简介', field: 'intro', align: 'left' },
+                        { name: 'options', label: '操作', align: 'left' },
+                    ],
+                    fan_list_rows: [],
+                    // 搜索视频
+                    search_video_list: async (search_term) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'video',
+                            action: 'search_video_list',
+                            search_term: search_term,
+                            num: 20
+                        };
+                        const response = await axios.get(url, { params });
+                        this.search_video_list_rows = response.data.video_list;
+                    },
+                    // 搜索视频搜索事件
+                    _search_video_list: (keyword) => {
+                        this.search_video_list(keyword);
+                    },
+                    // 搜索视频columns
+                    search_video_list_columns: [
+                        { name: 'cover_url', label: '封面', field: 'cover_url', align: 'left' },
+                        { name: 'info', label: '视频信息', field: 'info', align: 'left' },
+                        { name: 'options', label: '操作', align: 'left' },
+                    ],
+                    search_video_list_rows: [],
+                    // 搜索动态
+                    search_blog_list: async (search_term) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'blog',
+                            action: 'search_blog_list',
+                            search_term: search_term,
+                            num: 20
+                        };
+                        const response = await axios.get(url, { params });
+                        this.search_blog_list_rows = response.data.blog_list;
+                    },
+                    // 搜索动态搜索事件
+                    _search_blog_list: (keyword) => {
+                        this.search_blog_list(keyword);
+                    },
+                    // 搜索动态columns
+                    search_blog_list_columns: [
+                        { name: 'info', label: '动态信息', field: 'info', align: 'left' },
+                        { name: 'title', label: '标题', field: 'title', align: 'left' },
+                        { name: 'content', label: '内容', field: 'content', align: 'left' },
+                        { name: 'options', label: '操作', align: 'left' },
+                    ],
+                    search_blog_list_rows: [],
+                    // 用户视频
+                    user_video_list: async (uid, offset) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'video',
+                            action: 'user_video_list',
+                            uid: uid,
+                            offset: offset,
+                            num: 5
+                        };
+                        const response = await axios.get(url, { params });
+                        this.user_video_list_rows = response.data.video_list;
+                    },
+                    // 用户视频搜索事件
+                    _user_video_list: (keyword) => {
+                        this.user_video_list(keyword, this.user_video_list_offset);
+                    },
+                    // 用户视频columns
+                    user_video_list_columns: [
+                        { name: 'cover_url', label: '封面', field: 'cover_url', align: 'left' },
+                        { name: 'info', label: '视频信息', field: 'info', align: 'left' },
+                        { name: 'options', label: '操作', align: 'left' },
+                    ],
+                    user_video_list_rows: [],
+                    // 用户动态
+                    user_blog_list: async (uid, offset) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'blog',
+                            action: 'user_blog_list',
+                            uid: uid,
+                            offset: offset,
+                            num: 5
+                        };
+                        const response = await axios.get(url, { params });
+                        this.user_blog_list_rows = response.data.blog_list;
+                    },
+                    // 用户动态搜索事件
+                    _user_blog_list: (keyword) => {
+                        this.user_blog_list(keyword, this.user_blog_list_offset);
+                    },
+                    // 用户动态columns
+                    user_blog_list_columns: [
+                        { name: 'info', label: '动态信息', field: 'info', align: 'left' },
+                        { name: 'title', label: '标题', field: 'title', align: 'left' },
+                        { name: 'content', label: '内容', field: 'content', align: 'left' },
+                        { name: 'options', label: '操作', align: 'left' },
+                    ],
+                    user_blog_list_rows: [],
+                    // 设置视频所属合集
+                    set_video_collection: async (vid, token, collection) => {
+                        if (!this.sessionStorage_token){
+                            this.goToLogin();
+                        }
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'collection',
+                            action: 'set_video_collection',
+                            vid: vid,
+                            token: token,
+                            collection: collection,
+                        };
+                        const response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            let dict = {
+                                'system_error': '系统错误',
+                                'too_many_requests': '请求频率过高',
+                                'missing_argument': '缺少参数',
+                                'error_token': '错误token',
+                                'error_type': '错误数值类型',
+                                'error_collection': '错误合集',
+                                'warn': '触发敏感词',
+                                'text_too_long': '合集名称太长',
+                                'text_too_short': '合集名称太短',
+                                'no_permission': '没有权限',
+                            }
+                            Quasar.Notify.create({
+                                type: 'negative',
+                                message: '设置视频所属合集失败：' + dict[response.data.message]
+                            });
+                            return;
+                        }
+                        else {
+                            Quasar.Notify.create({
+                                type: 'success',
+                                message: '设置视频所属合集成功'
+                            });
+                        }
+                    },
+                    // 获取视频所属合集列表
+                    get_video_collection: async (vid) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'collection',
+                            action: 'get_video_collection',
+                            vid: vid,
+                        };
+                        const response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            return;
+                        }
+                        else {
+                            this.get_video_collection_rows = response.data.video_list;
+                            this.get_video_collection_name = response.data.collection;
+                        }
+                    },
+                    // 获取视频所属合集列表columns
+                    get_video_collection_columns: [
+                        { name: 'cover_url', label: '封面', field: 'cover_url', align: 'left' },
+                        { name: 'info', label: '视频信息', field: 'info', align: 'left' },
+                        { name: 'options', label: '操作', align: 'left' },
+                    ],
+                    get_video_collection_rows: [],
+                    get_video_collection_name: '',
+                    get_video_collection_dialog: false,
+                    // 用户拥有的视频合集
+                    get_user_video_collection: async (uid) => {
+                        let url = 'https://api.ottohub.cn/';
+                        let params = {
+                            module: 'collection',
+                            action: 'get_user_video_collection',
+                            uid: uid,
+                        };
+                        let response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            return;
+                        }
+                        this.user_video_collection = response.data.collection_list;
+                        let result_list = [];
+                        for (v in this.user_video_collection) {
+                            let url = 'https://api.ottohub.cn/';
+                            let params = {
+                                module: 'collection',
+                                action: 'video_collection_list',
+                                uid: uid,
+                                collection: this.user_video_collection[v],
+                            };
+                            let response = await axios.get(url, { params });
+                            if (response.data.status === 'error') {
+                                continue;
+                            }
+                            else {
+                                result_list.push({
+                                    'name': this.user_video_collection[v],
+                                    'video_list': response.data.video_list,
+                                })
+                            }
+                        }
+                        this.video_collection_list_ = result_list;
+                        this.get_user_video_collection_dialog = true;
+                    },
+                    user_video_collection: [],
+                    get_user_video_collection_name: '',
+                    get_user_video_collection_dialog: false,
+                    video_collection_list_: [],
+                    user_list: [],
+                    user: {},
+                    keyword: null,
+                    following_list_offset: 0,
+                    fan_list_offset: 0,
+                    user_video_list_offset: 0,
+                    user_blog_list_offset: 0,
+                    collection: '',
+                    // 未读消息数
+                    new_message_num: async (token) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'im',
+                            action: 'new_message_num',
+                            token: token,
+                        };
+                        const response = await axios.get(url, { params });
+                        if (response.data.status === 'error') {
+                            return;
+                        }
+                        else {
+                            this.new_message_num_ = response.data.new_message_num;
+                        }
+                    },
+                    new_message_num_: null,
+                    // 更改offset，不刷新页面
+                    changeOffset(type, offsetChange) {
+                        if (type === 'following_list') {
+                            // 关注列表
+                            let newOffset = parseInt(this.following_list_offset) + offsetChange;
+                            if (newOffset < 0) {
+                                newOffset = 0;
+                            }
+                            this.following_list_offset = newOffset;
+                            this._following_list(this.keyword);
+                        } else if (type === 'fan_list') {
+                            // 粉丝列表
+                            let newOffset = parseInt(this.fan_list_offset) + offsetChange;
+                            if (newOffset < 0) {
+                                newOffset = 0;
+                            }
+                            this.fan_list_offset = newOffset;
+                            this._fan_list(this.keyword);
+                        } else if (type === 'user_video_list') {
+                            // 用户视频
+                            let newOffset = parseInt(this.user_video_list_offset) + offsetChange;
+                            if (newOffset < 0) {
+                                newOffset = 0;
+                            }
+                            this.user_video_list_offset = newOffset;
+                            this._user_video_list(this.keyword);
+                        } else if (type === 'user_blog_list') {
+                            // 用户动态
+                            let newOffset = parseInt(this.user_blog_list_offset) + offsetChange;
+                            if (newOffset < 0) {
+                                newOffset = 0;
+                            }
+                            this.user_blog_list_offset = newOffset;
+                            this._user_blog_list(this.keyword);
+                        }
+                    },
+                };
+            },
+            mounted() {
+                const currentUrl = new URL(window.location.href);
+                this.keyword = currentUrl.searchParams.get('keyword');
+                this._search_user_list(this.keyword);
+                this._id_user_list(this.keyword);
+                this._following_list(this.keyword);
+                this._fan_list(this.keyword);
+                this._search_video_list(this.keyword);
+                this._search_blog_list(this.keyword);
+                this._user_video_list(this.keyword);
+                this._user_blog_list(this.keyword);
+                if (this.sessionStorage_token) {
+                    setInterval(() => {
+                        this.new_message_num(this.sessionStorage_token);
+                    }, 5000);
+                }
+            },
+            computed: {
+                innerWidth() {
+                    return window.innerWidth;
+                }
+            }
+        };
+        const app = Vue.createApp(App);
+
+        app.use(Quasar)
+        app.mount('#q-app')
+    </script>
+</body>
+
+</html>
