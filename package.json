@@ -229,9 +229,7 @@
     },
     "devDependencies": {
         "electron": "^36.5.0",
-        "electron-builder": "^26.0.12",
-        "axios": "^1.7.9",
-        "winston": "^3.15.0"
+        "electron-builder": "^26.0.12"
     },
     "dependencies": {
         "axios": "^1.7.9",
