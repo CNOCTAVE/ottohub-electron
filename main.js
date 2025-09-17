@@ -14,7 +14,7 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>. */
 
-const { app, BrowserWindow, ipcMain, dialog, clipboard, screen, nativeTheme } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog, clipboard, screen, nativeTheme } = require('electron');
 const { exec } = require('child_process');
 const https = require('https');
 const path = require('path');
@@ -44,8 +44,6 @@ const log = winston.createLogger({
     ],
 });
 
-let mainWindow;
-
 function createWindow() {
     const win = new BrowserWindow({
         width: 800,
@@ -62,10 +60,7 @@ function createWindow() {
         },
     });
     win.loadFile('index.html')
-    win.on('closed', () => {
-        mainWindow = null
-        handle.removeAllListeners()
-    })
+    Menu.setApplicationMenu(null);
 };
 
 app.whenReady().then(createWindow)

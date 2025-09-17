@@ -200,6 +200,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             <q-page-container>
                 <div class="q-ma-md text-h4">
                     <div class="text-h4">消息</div>
+                    <q-btn color="green" icon="check" label="系统消息一键已读" style="width:100%; margin-bottom: 10px;"
+                        @click="read_all_system_message(sessionStorage_token)"></q-btn>
                     <q-separator></q-separator>
                     <q-expansion-item
                         @click="unread_message_list_offset=0; unread_message_list(sessionStorage_token, '0', '5');">
@@ -534,6 +536,16 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                         }
                     },
                     new_message_num_: null,
+                    // 系统消息一键已读
+                    read_all_system_message: async (token) => {
+                        const url = 'https://api.ottohub.cn/';
+                        const params = {
+                            module: 'im',
+                            action: 'read_all_system_message',
+                            token: token,
+                        };
+                        const response = await axios.get(url, { params });
+                    },
                     // 更改offset，不刷新页面
                     changeOffset(type, offsetChange) {
                         if (type === 'unread_message_list') {
