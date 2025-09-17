@@ -1,5 +1,7 @@
 {
     "appId": "cn.cnoctave.ottohub-electron",
+    "asar": false,
+    "compression": "store",
     "productName": "ottohub-electron",
     "buildNumber": "2025.9.2",
     "icon": "logo.png",
@@ -8,10 +10,10 @@
     },
     "publish": [
         {
-        "provider": "github",
-        "owner": "CNOCTAVE",
-        "repo": "ottohub-electron",
-        "releaseType": "release"
+            "provider": "github",
+            "owner": "CNOCTAVE",
+            "repo": "ottohub-electron",
+            "releaseType": "release"
         }
     ],
     "linux": {
