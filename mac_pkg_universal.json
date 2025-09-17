@@ -1,7 +1,7 @@
 {
     "appId": "cn.cnoctave.ottohub-electron",
     "productName": "ottohub-electron",
-    "buildNumber": "2025.9.0",
+    "buildNumber": "2025.9.1",
     "icon": "logo.png",
     "directories": {
         "output": "dist"
