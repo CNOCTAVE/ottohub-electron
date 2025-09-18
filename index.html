@@ -335,15 +335,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                         <q-btn color="primary" icon="refresh" label="换一批"
                             v-show="(this.type !== '3') && (this.type !== '4')" @click="reload()"></q-btn>
                         <q-btn color="primary" icon="west" label="上一页" v-show="this.type === '3'"
-                            @click="changeOffset('3', -5)"></q-btn>
+                            @click="changeOffset('3', -8)"></q-btn>
                         <div v-show="this.type === '3'">&nbsp;</div>
                         <q-btn color="primary" icon-right="east" label="下一页" v-show="this.type === '3'"
-                            @click="changeOffset('3', 5)"></q-btn>
+                            @click="changeOffset('3', 8)"></q-btn>
                         <q-btn color="primary" icon="west" label="上一页" v-show="this.type === '4'"
-                            @click="changeOffset('4', -5)"></q-btn>
+                            @click="changeOffset('4', -8)"></q-btn>
                         <div v-show="this.type === '4'">&nbsp;</div>
                         <q-btn color="primary" icon-right="east" label="下一页" v-show="this.type === '4'"
-                            @click="changeOffset('4', 5)"></q-btn>
+                            @click="changeOffset('4', 8)"></q-btn>
                     </div>
                     <q-separator></q-separator>
                     <!-- 已知bug: https://github.com/quasarframework/quasar/issues/18129 -->

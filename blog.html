@@ -542,9 +542,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                     },
                     // 指定动态
                     get_blog_detail: async (bid, token) => {
-                        if (!this.sessionStorage_token){
-                            this.goToLogin();
-                        }
                         const url = 'https://api.ottohub.cn/';
                         const params = {
                             module: 'blog',
@@ -619,9 +616,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                     },
                     // 关注状态
                     follow_status: async (following_uid, token) => {
-                        if (!this.sessionStorage_token){
-                            this.goToLogin();
-                        }
                         const url = 'https://api.ottohub.cn/';
                         let params = {
                             module: 'following',
