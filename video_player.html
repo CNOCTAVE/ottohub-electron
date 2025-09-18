@@ -910,7 +910,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                             container: document.getElementById('dplayer'),
                             autoplay: true,
                             video: {
-                                url: `https://cdn.ottohub.cn/video/video_video/video_video_${this.vid}.mp4`,
+                                url: this.video_info.video_url,
+                                cover: this.video_info.cover_url,
                             },
                         })
                         let danmaku_container = document.createElement("div");
@@ -1032,10 +1033,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                         this.video_info = response.data;
                         this.follow_status(this.video_info.uid, this.sessionStorage_token);
                         this.video_comment_list(this.video_info.vid, '0', this.offset1, '5');
-                    },
-                    // 获取视频信息
-                    hqspxx: (vid) => {
-                        this.id_video_list(vid);
+                        this.new_dp();
                     },
                     // 获取弹幕
                     get_danmaku: async (vid) => {
@@ -1048,7 +1046,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
                         const response = await axios.get(url, { params });
                         this.danmaku = response.data.data;
                         this.danmaku_ = this.convertToDanmakuJSFormat(this.danmaku);
-                        this.new_dp();
                         this.new_dm();
                     },
                     // 发送弹幕
@@ -1654,7 +1651,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
             mounted() {
                 const currentUrl = new URL(window.location.href);
                 this.vid = currentUrl.searchParams.get('vid');
-                this.hqspxx(this.vid);
+                this.id_video_list(this.vid);
                 this.get_danmaku(this.vid);
                 if (this.sessionStorage_token) {
                     setInterval(() => {
