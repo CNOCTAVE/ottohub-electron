@@ -3,7 +3,7 @@
     "asar": false,
     "compression": "store",
     "productName": "ottohub-electron",
-    "buildNumber": "2025.9.5",
+    "buildNumber": "2025.10.1",
     "icon": "logo.png",
     "directories": {
         "output": "dist"
